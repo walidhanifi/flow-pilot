@@ -15,7 +15,9 @@
       "WebSearch",
       "WebFetch(domain:supabase.com)",
       "Bash(claude mcp:*)",
-      "Bash(supabase --version)"
+      "Bash(supabase --version)",
+      "Bash(find /c/Users/Walid/Desktop/repos/tracker -name *.test.ts -o -name *.test.tsx -o -name *.spec.ts)",
+      "Bash(find /c/Users/Walid/Desktop/repos/tracker -path node_modules -prune -o -name *.test.ts -o -name *.test.tsx)"
     ]
   },
   "dangerouslySkipPermissions": true

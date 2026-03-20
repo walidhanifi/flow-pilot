@@ -164,7 +164,7 @@ describe("KanbanBoard", () => {
       expect(screen.getByText("Failed to fetch jobs")).toBeInTheDocument();
     });
     expect(
-      screen.getByRole("button", { name: /try again/i })
+      screen.getByRole("button", { name: /retry/i })
     ).toBeInTheDocument();
   });
 

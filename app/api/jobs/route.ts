@@ -25,9 +25,13 @@ export async function GET() {
     .limit(200);
 
   if (error) {
-    console.error("[jobs] GET error:", error.message);
+    console.error("[jobs] GET error:", error.message, error.code, error.details);
     return NextResponse.json(
-      { success: false, error: "Failed to fetch jobs" },
+      {
+        success: false,
+        error: "Could not load your jobs. Please try again.",
+        code: error.code,
+      },
       { status: 500 }
     );
   }
@@ -74,7 +78,7 @@ export async function POST(request: NextRequest) {
     .eq("status", "applied")
     .order("position", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   const nextPosition = maxRow ? maxRow.position + 1 : 0;
 
@@ -92,9 +96,13 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) {
-    console.error("[jobs] POST error:", error.message);
+    console.error("[jobs] POST error:", error.message, error.code, error.details);
     return NextResponse.json(
-      { success: false, error: "Failed to create job" },
+      {
+        success: false,
+        error: "Could not create job. Please try again.",
+        code: error.code,
+      },
       { status: 500 }
     );
   }

@@ -119,19 +119,6 @@ export function KanbanBoard() {
     [jobsByStatus, updateJob]
   );
 
-  if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center gap-4 py-20">
-        <p className="text-sm font-medium text-destructive">
-          {error instanceof Error ? error.message : "Failed to load jobs"}
-        </p>
-        <Button variant="outline" size="sm" onClick={() => refetch()}>
-          Try again
-        </Button>
-      </div>
-    );
-  }
-
   return (
     <div>
       {/* Header */}
@@ -144,12 +131,30 @@ export function KanbanBoard() {
         </div>
         <Button
           onClick={() => setModalOpen(true)}
+          disabled={isError}
           className="h-10 gap-2 rounded-xl px-5 text-sm font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
         >
           <Plus className="h-4 w-4" />
           Add job
         </Button>
       </div>
+
+      {/* Error banner — board still renders below */}
+      {isError && (
+        <div className="mb-4 flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
+          <p className="text-sm font-medium text-destructive">
+            {error instanceof Error ? error.message : "Something went wrong loading your jobs."}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetch()}
+            className="ml-4 shrink-0 border-destructive/30 text-destructive hover:bg-destructive/10"
+          >
+            Retry
+          </Button>
+        </div>
+      )}
 
       {/* Board */}
       <DndContext

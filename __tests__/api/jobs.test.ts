@@ -31,7 +31,7 @@ function createRequest(body: unknown): NextRequest {
 
 function createChain(
   finalResult: { data?: unknown; error?: unknown },
-  options?: { terminator?: "limit" | "single" }
+  options?: { terminator?: "limit" | "single" | "maybeSingle" }
 ) {
   const terminator = options?.terminator ?? "limit";
   const chain = {
@@ -40,10 +40,13 @@ function createChain(
     order: vi.fn().mockReturnThis(),
     limit: vi.fn().mockReturnThis(),
     single: vi.fn().mockReturnThis(),
+    maybeSingle: vi.fn().mockReturnThis(),
     insert: vi.fn().mockReturnThis(),
   };
   if (terminator === "limit") {
     chain.limit.mockResolvedValue(finalResult);
+  } else if (terminator === "maybeSingle") {
+    chain.maybeSingle.mockResolvedValue(finalResult);
   } else {
     chain.single.mockResolvedValue(finalResult);
   }
@@ -91,7 +94,8 @@ describe("GET /api/jobs", () => {
     const body = await response.json();
 
     expect(response.status).toBe(500);
-    expect(body).toEqual({ success: false, error: "Failed to fetch jobs" });
+    expect(body.success).toBe(false);
+    expect(body.error).toBe("Could not load your jobs. Please try again.");
     // Must NOT leak the actual database error
     expect(body.error).not.toContain("relation");
   });
@@ -154,10 +158,10 @@ describe("POST /api/jobs", () => {
       created_at: "2026-01-01",
     };
 
-    // First call: get max position (terminates with .single())
+    // First call: get max position (terminates with .maybeSingle())
     const positionChain = createChain(
       { data: { position: 2 }, error: null },
-      { terminator: "single" }
+      { terminator: "maybeSingle" }
     );
     // Second call: insert (terminates with .single())
     const insertChain = createChain(
@@ -188,7 +192,7 @@ describe("POST /api/jobs", () => {
 
     const positionChain = createChain(
       { data: null, error: null },
-      { terminator: "single" }
+      { terminator: "maybeSingle" }
     );
     const insertChain = createChain(
       {
@@ -213,7 +217,8 @@ describe("POST /api/jobs", () => {
     const body = await response.json();
 
     expect(response.status).toBe(500);
-    expect(body).toEqual({ success: false, error: "Failed to create job" });
+    expect(body.success).toBe(false);
+    expect(body.error).toBe("Could not create job. Please try again.");
     expect(body.error).not.toContain("duplicate");
   });
 });
