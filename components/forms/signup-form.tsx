@@ -8,14 +8,6 @@ import { signupSchema } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export function SignupForm() {
   const router = useRouter();
@@ -77,95 +69,138 @@ export function SignupForm() {
 
   if (confirmationSent) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Check your email</CardTitle>
-          <CardDescription>
-            We sent a confirmation link to <strong>{email}</strong>. Click the
-            link to activate your account.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Link href="/login" className="text-sm text-primary underline">
-            Back to login
-          </Link>
-        </CardFooter>
-      </Card>
+      <div>
+        <div className="mb-6">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+            <svg
+              className="h-7 w-7 text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+              />
+            </svg>
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Check your email
+          </h2>
+          <p className="mt-2 text-base text-muted-foreground">
+            We sent a confirmation link to{" "}
+            <strong className="text-foreground">{email}</strong>. Click the link
+            to activate your account.
+          </p>
+        </div>
+        <Link
+          href="/login"
+          className="text-sm font-semibold text-primary hover:underline"
+        >
+          Back to login
+        </Link>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Enter your details to get started
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="flex flex-col gap-4">
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
+    <div>
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold tracking-tight">
+          Create your account
+        </h2>
+        <p className="mt-2 text-base text-muted-foreground">
+          Start tracking your job applications in one place.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {error && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive">
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="email" className="text-sm font-semibold">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
+          />
+          {fieldErrors.email && (
+            <p className="text-sm font-medium text-destructive">
+              {fieldErrors.email}
+            </p>
           )}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            {fieldErrors.email && (
-              <p className="text-sm text-destructive">{fieldErrors.email}</p>
-            )}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="At least 8 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {fieldErrors.password && (
-              <p className="text-sm text-destructive">
-                {fieldErrors.password}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="confirmPassword">Confirm password</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              placeholder="Repeat your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            {fieldErrors.confirmPassword && (
-              <p className="text-sm text-destructive">
-                {fieldErrors.confirmPassword}
-              </p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Sign up"}
-          </Button>
-          <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary underline">
-              Log in
-            </Link>
-          </p>
-        </CardFooter>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="password" className="text-sm font-semibold">
+            Password
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="At least 8 characters"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
+          />
+          {fieldErrors.password && (
+            <p className="text-sm font-medium text-destructive">
+              {fieldErrors.password}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="confirmPassword" className="text-sm font-semibold">
+            Confirm password
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Repeat your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
+          />
+          {fieldErrors.confirmPassword && (
+            <p className="text-sm font-medium text-destructive">
+              {fieldErrors.confirmPassword}
+            </p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          disabled={loading}
+          className="mt-2 h-12 rounded-xl text-base font-semibold tracking-wide shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+        >
+          {loading ? "Creating account..." : "Get started"}
+        </Button>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-primary hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
       </form>
-    </Card>
+    </div>
   );
 }

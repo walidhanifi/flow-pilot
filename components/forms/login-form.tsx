@@ -8,14 +8,6 @@ import { loginSchema } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export function LoginForm() {
   const router = useRouter();
@@ -62,61 +54,79 @@ export function LoginForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Log in</CardTitle>
-        <CardDescription>
-          Enter your credentials to access your account
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="flex flex-col gap-4">
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
+    <div>
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold tracking-tight">Welcome back</h2>
+        <p className="mt-2 text-base text-muted-foreground">
+          Sign in to continue tracking your applications.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {error && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive">
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="email" className="text-sm font-semibold">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
+          />
+          {fieldErrors.email && (
+            <p className="text-sm font-medium text-destructive">
+              {fieldErrors.email}
+            </p>
           )}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            {fieldErrors.email && (
-              <p className="text-sm text-destructive">{fieldErrors.email}</p>
-            )}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            {fieldErrors.password && (
-              <p className="text-sm text-destructive">
-                {fieldErrors.password}
-              </p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Logging in..." : "Log in"}
-          </Button>
-          <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary underline">
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="password" className="text-sm font-semibold">
+            Password
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="Your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
+          />
+          {fieldErrors.password && (
+            <p className="text-sm font-medium text-destructive">
+              {fieldErrors.password}
+            </p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          disabled={loading}
+          className="mt-2 h-12 rounded-xl text-base font-semibold tracking-wide shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+        >
+          {loading ? "Signing in..." : "Sign in"}
+        </Button>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/signup"
+            className="font-semibold text-primary hover:underline"
+          >
+            Create one
+          </Link>
+        </p>
       </form>
-    </Card>
+    </div>
   );
 }

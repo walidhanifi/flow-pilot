@@ -33,14 +33,14 @@ describe("LoginForm", () => {
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Log in" })
+      screen.getByRole("button", { name: "Sign in" })
     ).toBeInTheDocument();
   });
 
   it("renders link to signup page", () => {
     render(<LoginForm />);
 
-    const link = screen.getByRole("link", { name: "Sign up" });
+    const link = screen.getByRole("link", { name: "Create one" });
     expect(link).toHaveAttribute("href", "/signup");
   });
 
@@ -50,7 +50,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "not-an-email");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     // HTML5 type="email" validation prevents submission in jsdom
     expect(mockSignInWithPassword).not.toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "short");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
       expect(
@@ -79,7 +79,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
       expect(mockSignInWithPassword).toHaveBeenCalledWith({
@@ -96,7 +96,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
       expect(mockRefresh).toHaveBeenCalled();
@@ -113,7 +113,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "wrongpassword1");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
       expect(
@@ -135,11 +135,11 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.click(screen.getByRole("button", { name: "Log in" }));
+    await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Logging in..." })
+        screen.getByRole("button", { name: "Signing in..." })
       ).toBeDisabled();
     });
 
