@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(find C:/Users/Walid/Desktop/repos/tracker/src -type f \\\\\\(-name *.test.* -o -name *.spec.* -o -name __tests__ \\\\\\))"
+    ]
+  }
+}
