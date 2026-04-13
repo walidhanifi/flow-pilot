@@ -21,6 +21,13 @@ beforeEach(() => {
 
 const MOCK_USER = { id: "user-1", email: "test@example.com" };
 
+function createGetRequest(boardId?: string): NextRequest {
+  const url = boardId
+    ? `http://localhost:3000/api/jobs?boardId=${boardId}`
+    : "http://localhost:3000/api/jobs";
+  return new NextRequest(url, { method: "GET" });
+}
+
 function createRequest(body: unknown): NextRequest {
   return new NextRequest("http://localhost:3000/api/jobs", {
     method: "POST",
@@ -57,7 +64,7 @@ describe("GET /api/jobs", () => {
   it("returns 401 when user is not authenticated", async () => {
     mockGetUser.mockResolvedValue({ data: { user: null } });
 
-    const response = await GET();
+    const response = await GET(createGetRequest());
     const body = await response.json();
 
     expect(response.status).toBe(401);
@@ -66,13 +73,11 @@ describe("GET /api/jobs", () => {
 
   it("returns jobs for authenticated user", async () => {
     mockGetUser.mockResolvedValue({ data: { user: MOCK_USER } });
-    const jobs = [
-      { id: "1", company: "Acme", role: "Engineer", status: "applied", position: 0 },
-    ];
+    const jobs = [{ id: "1", company: "Acme", role: "Engineer", status: "applied", position: 0 }];
     const chain = createChain({ data: jobs, error: null });
     mockFrom.mockReturnValue(chain);
 
-    const response = await GET();
+    const response = await GET(createGetRequest());
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -86,11 +91,11 @@ describe("GET /api/jobs", () => {
     mockGetUser.mockResolvedValue({ data: { user: MOCK_USER } });
     const chain = createChain({
       data: null,
-      error: { message: "relation \"jobs\" does not exist" },
+      error: { message: 'relation "jobs" does not exist' },
     });
     mockFrom.mockReturnValue(chain);
 
-    const response = await GET();
+    const response = await GET(createGetRequest());
     const body = await response.json();
 
     expect(response.status).toBe(500);
@@ -164,10 +169,7 @@ describe("POST /api/jobs", () => {
       { terminator: "maybeSingle" }
     );
     // Second call: insert (terminates with .single())
-    const insertChain = createChain(
-      { data: newJob, error: null },
-      { terminator: "single" }
-    );
+    const insertChain = createChain({ data: newJob, error: null }, { terminator: "single" });
 
     let callCount = 0;
     mockFrom.mockImplementation(() => {
@@ -190,10 +192,7 @@ describe("POST /api/jobs", () => {
   it("returns 500 with generic message on insert error", async () => {
     mockGetUser.mockResolvedValue({ data: { user: MOCK_USER } });
 
-    const positionChain = createChain(
-      { data: null, error: null },
-      { terminator: "maybeSingle" }
-    );
+    const positionChain = createChain({ data: null, error: null }, { terminator: "maybeSingle" });
     const insertChain = createChain(
       {
         data: null,

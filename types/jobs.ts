@@ -7,6 +7,7 @@ export type JobStatus = (typeof JOB_STATUSES)[number];
 export interface Job {
   readonly id: string;
   readonly user_id: string;
+  readonly board_id: string | null;
   readonly company: string;
   readonly role: string;
   readonly url: string;

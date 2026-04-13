@@ -1,16 +1,15 @@
 import { useMemo } from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Job, JobStatus, CreateJobPayload, UpdateJobPayload } from "@/types/jobs";
 import { JOB_STATUSES } from "@/types/jobs";
 
-const JOBS_KEY = ["jobs"] as const;
+function jobsKey(boardId: string) {
+  return ["jobs", boardId] as const;
+}
 
-async function fetchJobs(): Promise<Job[]> {
-  const res = await fetch("/api/jobs");
+async function fetchJobs(boardId: string): Promise<Job[]> {
+  const url = `/api/jobs?boardId=${encodeURIComponent(boardId)}`;
+  const res = await fetch(url);
   const json = await res.json();
 
   if (!res.ok || !json.success) {
@@ -20,8 +19,9 @@ async function fetchJobs(): Promise<Job[]> {
   return json.data;
 }
 
-export function useJobs() {
+export function useJobs(boardId: string) {
   const queryClient = useQueryClient();
+  const JOBS_KEY = jobsKey(boardId);
 
   const {
     data: jobs = [],
@@ -31,7 +31,7 @@ export function useJobs() {
     refetch,
   } = useQuery<Job[]>({
     queryKey: JOBS_KEY,
-    queryFn: fetchJobs,
+    queryFn: () => fetchJobs(boardId),
   });
 
   const jobsByStatus = useMemo(() => {
@@ -47,7 +47,6 @@ export function useJobs() {
       return { ...acc, [job.status]: [...acc[job.status], job] };
     }, base);
 
-    // Sort each column by position (immutable)
     return Object.fromEntries(
       JOB_STATUSES.map((status) => [
         status,
@@ -61,7 +60,7 @@ export function useJobs() {
       const res = await fetch("/api/jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, board_id: boardId }),
       });
       const json = await res.json();
 
@@ -77,10 +76,7 @@ export function useJobs() {
   });
 
   const updateJob = useMutation({
-    mutationFn: async ({
-      id,
-      ...payload
-    }: UpdateJobPayload & { id: string }) => {
+    mutationFn: async ({ id, ...payload }: UpdateJobPayload & { id: string }) => {
       const res = await fetch(`/api/jobs/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

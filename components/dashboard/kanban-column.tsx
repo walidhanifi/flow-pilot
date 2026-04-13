@@ -18,6 +18,7 @@ interface KanbanColumnProps {
   readonly deletingJobId?: string;
   readonly onRename?: (status: JobStatus, label: string) => void;
   readonly onHide?: (status: JobStatus) => void;
+  readonly onEditJob?: (job: Job) => void;
 }
 
 export function KanbanColumn({
@@ -30,6 +31,7 @@ export function KanbanColumn({
   deletingJobId,
   onRename,
   onHide,
+  onEditJob,
 }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: status,
@@ -148,6 +150,7 @@ export function KanbanColumn({
                 job={job}
                 onDelete={onDeleteJob ? () => onDeleteJob(job.id) : undefined}
                 isDeleting={deletingJobId === job.id}
+                onEdit={onEditJob ? () => onEditJob(job) : undefined}
               />
             ))}
         </SortableContext>

@@ -27,6 +27,7 @@ vi.mock("@dnd-kit/utilities", () => ({
 const MOCK_JOB: Job = {
   id: "job-1",
   user_id: "user-1",
+  board_id: null,
   company: "Acme Corp",
   role: "Frontend Engineer",
   url: "https://acme.com/jobs/1",

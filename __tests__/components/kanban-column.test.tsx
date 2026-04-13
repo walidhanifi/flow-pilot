@@ -33,6 +33,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "1",
     user_id: "user-1",
+    board_id: null,
     company: "Acme Corp",
     role: "Frontend Engineer",
     url: "https://acme.com",
@@ -44,6 +45,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "2",
     user_id: "user-1",
+    board_id: null,
     company: "Beta Inc",
     role: "Backend Dev",
     url: "",

@@ -21,17 +21,24 @@ import type { Job, JobStatus } from "@/types/jobs";
 import { KanbanColumn } from "@/components/dashboard/kanban-column";
 import { JobCard } from "@/components/dashboard/job-card";
 import { AddJobModal } from "@/components/dashboard/add-job-modal";
+import { EditJobModal } from "@/components/dashboard/edit-job-modal";
 import { Button } from "@/components/ui/button";
 
-export function KanbanBoard() {
+interface KanbanBoardProps {
+  readonly boardId: string;
+  readonly boardName?: string;
+}
+
+export function KanbanBoard({ boardId, boardName }: KanbanBoardProps) {
   const { jobs, jobsByStatus, isLoading, isError, error, refetch, addJob, updateJob, deleteJob } =
-    useJobs();
+    useJobs(boardId);
 
   const { visibleSettings, settings, hiddenCount, renameColumn, toggleColumn } =
     useColumnSettings();
 
   const [activeJob, setActiveJob] = useState<Job | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingJob, setEditingJob] = useState<Job | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -102,7 +109,7 @@ export function KanbanBoard() {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Your board</h2>
+          <h2 className="text-2xl font-bold tracking-tight">{boardName ?? "Your board"}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Drag items between columns to update their status.
           </p>
@@ -173,6 +180,7 @@ export function KanbanBoard() {
                 deletingJobId={deleteJob.isPending ? (deleteJob.variables as string) : undefined}
                 onRename={renameColumn}
                 onHide={toggleColumn}
+                onEditJob={setEditingJob}
               />
             </div>
           ))}
@@ -184,6 +192,13 @@ export function KanbanBoard() {
       </DndContext>
 
       <AddJobModal open={modalOpen} onOpenChange={setModalOpen} addJob={addJob} />
+      <EditJobModal
+        job={editingJob}
+        onOpenChange={(open) => {
+          if (!open) setEditingJob(null);
+        }}
+        updateJob={updateJob}
+      />
     </div>
   );
 }

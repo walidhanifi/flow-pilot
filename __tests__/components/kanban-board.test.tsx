@@ -40,6 +40,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "1",
     user_id: "user-1",
+    board_id: "board-1",
     company: "Acme Corp",
     role: "Frontend Engineer",
     url: "",
@@ -51,6 +52,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "2",
     user_id: "user-1",
+    board_id: "board-1",
     company: "Beta Inc",
     role: "Backend Dev",
     url: "",
@@ -86,7 +88,7 @@ afterEach(() => {
 
 describe("KanbanBoard", () => {
   it("renders the board header", async () => {
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByText("Your board")).toBeInTheDocument();
@@ -94,7 +96,7 @@ describe("KanbanBoard", () => {
   });
 
   it("renders all four columns", async () => {
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByText("To Do")).toBeInTheDocument();
@@ -105,7 +107,7 @@ describe("KanbanBoard", () => {
   });
 
   it("renders job cards after loading", async () => {
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByText("Acme Corp")).toBeInTheDocument();
@@ -114,7 +116,7 @@ describe("KanbanBoard", () => {
   });
 
   it("renders Add item button", async () => {
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /add item/i })).toBeInTheDocument();
@@ -123,7 +125,7 @@ describe("KanbanBoard", () => {
 
   it("opens modal when Add item is clicked", async () => {
     const user = userEvent.setup();
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: /add item/i })).toBeInTheDocument();
@@ -145,7 +147,7 @@ describe("KanbanBoard", () => {
       })
     );
 
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByText("Failed to fetch jobs")).toBeInTheDocument();
@@ -154,7 +156,7 @@ describe("KanbanBoard", () => {
   });
 
   it("shows drag hint text", async () => {
-    render(<KanbanBoard />, { wrapper: createWrapper() });
+    render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(screen.getByText(/drag items between columns/i)).toBeInTheDocument();

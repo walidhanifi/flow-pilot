@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash2, FileText, ExternalLink } from "lucide-react";
+import { Trash2, FileText, ExternalLink, Pencil } from "lucide-react";
 import type { Job } from "@/types/jobs";
 
 function relativeTime(dateStr: string): string {
@@ -30,6 +30,7 @@ interface JobCardProps {
   readonly isDragOverlay?: boolean;
   readonly onDelete?: () => void;
   readonly isDeleting?: boolean;
+  readonly onEdit?: () => void;
 }
 
 export function JobCard({
@@ -37,6 +38,7 @@ export function JobCard({
   isDragOverlay = false,
   onDelete,
   isDeleting = false,
+  onEdit,
 }: JobCardProps) {
   const [confirming, setConfirming] = useState(false);
 
@@ -79,24 +81,38 @@ export function JobCard({
         .filter(Boolean)
         .join(" ")}
     >
-      {onDelete && (
-        <button
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={handleDeleteClick}
-          disabled={isDeleting}
-          className={[
-            "absolute right-2 top-2 flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
-            confirming
-              ? "bg-destructive text-destructive-foreground opacity-100"
-              : "text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        >
-          <Trash2 size={11} />
-          {confirming && "Confirm"}
-        </button>
-      )}
+      <div className="absolute right-2 top-2 flex items-center gap-1">
+        {onEdit && (
+          <button
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+            className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground opacity-0 transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:opacity-100"
+          >
+            <Pencil size={11} />
+          </button>
+        )}
+        {onDelete && (
+          <button
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={handleDeleteClick}
+            disabled={isDeleting}
+            className={[
+              "flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
+              confirming
+                ? "bg-destructive text-destructive-foreground opacity-100"
+                : "text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <Trash2 size={11} />
+            {confirming && "Confirm"}
+          </button>
+        )}
+      </div>
 
       <p className="pr-6 text-sm font-bold text-foreground">{job.company}</p>
       <p className="mt-0.5 text-sm text-muted-foreground">{job.role}</p>

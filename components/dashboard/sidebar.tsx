@@ -57,7 +57,8 @@ export function Sidebar({ email }: SidebarProps) {
   const { theme, setTheme } = useTheme();
 
   const isActive = (href: string) => {
-    if (href === "/dashboard") return pathname === "/dashboard";
+    if (href === "/dashboard")
+      return pathname === "/dashboard" || pathname.startsWith("/dashboard/board/");
     return pathname.startsWith(href);
   };
 

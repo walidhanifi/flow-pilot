@@ -5,10 +5,13 @@ import React from "react";
 import { useJobs } from "@/hooks/use-jobs";
 import type { Job } from "@/types/jobs";
 
+const BOARD_ID = "board-1";
+
 const MOCK_JOBS: Job[] = [
   {
     id: "1",
     user_id: "user-1",
+    board_id: BOARD_ID,
     company: "Acme Corp",
     role: "Frontend Engineer",
     url: "https://acme.com/jobs/1",
@@ -20,6 +23,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "2",
     user_id: "user-1",
+    board_id: BOARD_ID,
     company: "Beta Inc",
     role: "Full Stack Dev",
     url: "",
@@ -31,6 +35,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "3",
     user_id: "user-1",
+    board_id: BOARD_ID,
     company: "Gamma LLC",
     role: "Backend Engineer",
     url: "https://gamma.com/careers",
@@ -42,6 +47,7 @@ const MOCK_JOBS: Job[] = [
   {
     id: "4",
     user_id: "user-1",
+    board_id: BOARD_ID,
     company: "Delta Co",
     role: "Senior Dev",
     url: "",
@@ -79,7 +85,7 @@ afterEach(() => {
 
 describe("useJobs", () => {
   it("fetches jobs and returns them", async () => {
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -92,7 +98,7 @@ describe("useJobs", () => {
   });
 
   it("groups jobs by status", async () => {
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -108,7 +114,7 @@ describe("useJobs", () => {
   });
 
   it("sorts jobs within each status by position", async () => {
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -130,7 +136,7 @@ describe("useJobs", () => {
       })
     );
 
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -150,7 +156,7 @@ describe("useJobs", () => {
       })
     );
 
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -165,7 +171,7 @@ describe("useJobs", () => {
     expect(jobsByStatus.rejected).toHaveLength(0);
   });
 
-  it("addJob mutation calls POST /api/jobs", async () => {
+  it("addJob mutation calls POST /api/jobs with board_id", async () => {
     const mockFetch = vi.fn();
     // First call: GET jobs
     mockFetch.mockResolvedValueOnce({
@@ -176,6 +182,7 @@ describe("useJobs", () => {
     const newJob: Job = {
       id: "5",
       user_id: "user-1",
+      board_id: BOARD_ID,
       company: "New Corp",
       role: "New Role",
       url: "",
@@ -195,7 +202,7 @@ describe("useJobs", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -217,6 +224,7 @@ describe("useJobs", () => {
           company: "New Corp",
           role: "New Role",
           url: "",
+          board_id: BOARD_ID,
         }),
       });
     });
@@ -245,7 +253,7 @@ describe("useJobs", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 
@@ -287,7 +295,7 @@ describe("useJobs", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    const { result } = renderHook(() => useJobs(), {
+    const { result } = renderHook(() => useJobs(BOARD_ID), {
       wrapper: createWrapper(),
     });
 

@@ -2,9 +2,10 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createJobSchema } from "@/types/jobs";
 import { NextResponse, type NextRequest } from "next/server";
 
-const JOB_COLUMNS = "id, user_id, company, role, url, status, position, notes, created_at";
+const JOB_COLUMNS =
+  "id, user_id, board_id, company, role, url, status, position, notes, created_at";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
@@ -14,12 +15,21 @@ export async function GET() {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
-  const { data, error } = await supabase
+  const { searchParams } = new URL(request.url);
+  const boardId = searchParams.get("boardId");
+
+  let query = supabase
     .from("jobs")
     .select(JOB_COLUMNS)
     .eq("user_id", user.id)
     .order("position", { ascending: true })
     .limit(200);
+
+  if (boardId) {
+    query = query.eq("board_id", boardId);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("[jobs] GET error:", error.message, error.code, error.details);
@@ -47,8 +57,14 @@ export async function POST(request: NextRequest) {
   }
 
   let body: unknown;
+  let boardId: string | undefined;
   try {
-    body = await request.json();
+    const raw = await request.json();
+    // Extract board_id separately — not part of createJobSchema
+    if (raw && typeof raw === "object" && "board_id" in raw) {
+      boardId = typeof raw.board_id === "string" ? raw.board_id : undefined;
+    }
+    body = raw;
   } catch {
     return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 400 });
   }
@@ -77,6 +93,7 @@ export async function POST(request: NextRequest) {
     .from("jobs")
     .insert({
       user_id: user.id,
+      board_id: boardId ?? null,
       company: result.data.company,
       role: result.data.role,
       url: result.data.url,
