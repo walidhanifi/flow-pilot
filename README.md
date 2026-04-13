@@ -91,10 +91,11 @@ git push
 - [x] Settings page — theme toggle + column visibility management
 - [x] Team page — invite UI shell with coming-soon overlay
 - [x] Placeholder pages with animated UI — Analytics, AI Insights, Calendar, Documents, Contacts, Goals
+- [x] Multiple boards — Supabase-style board selector at `/dashboard`, individual boards at `/dashboard/board/[id]`
+- [x] Edit item modal — pencil icon on cards opens pre-filled form (company, role, url, notes, status)
 
 ### To Do
 
-- [ ] Edit item details inline or via modal
 - [ ] Filter and search items on the board
 - [ ] Due dates on item cards
 - [ ] Label / tag system
