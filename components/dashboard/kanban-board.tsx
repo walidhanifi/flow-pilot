@@ -104,7 +104,7 @@ export function KanbanBoard() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Your board</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Drag jobs between columns to update their status.
+            Drag items between columns to update their status.
           </p>
         </div>
         <Button
@@ -113,7 +113,7 @@ export function KanbanBoard() {
           className="h-10 gap-2 rounded-xl px-5 text-sm font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
         >
           <Plus className="h-4 w-4" />
-          Add job
+          Add item
         </Button>
       </div>
 
@@ -121,7 +121,7 @@ export function KanbanBoard() {
       {isError && (
         <div className="mb-4 flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
           <p className="text-sm font-medium text-destructive">
-            {error instanceof Error ? error.message : "Something went wrong loading your jobs."}
+            {error instanceof Error ? error.message : "Something went wrong loading your items."}
           </p>
           <Button
             variant="outline"

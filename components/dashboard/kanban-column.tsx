@@ -137,7 +137,7 @@ export function KanbanColumn({
 
           {!isLoading && jobs.length === 0 && (
             <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-border/50 p-6">
-              <p className="text-center text-sm text-muted-foreground">No jobs yet</p>
+              <p className="text-center text-sm text-muted-foreground">Nothing here yet</p>
             </div>
           )}
 

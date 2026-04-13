@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-export const JOB_STATUSES = [
-  "applied",
-  "interview",
-  "offer",
-  "rejected",
-] as const;
+export const JOB_STATUSES = ["applied", "interview", "offer", "rejected"] as const;
 
 export type JobStatus = (typeof JOB_STATUSES)[number];
 
@@ -59,12 +54,10 @@ export const updateJobSchema = z
 export type CreateJobPayload = z.infer<typeof createJobSchema>;
 export type UpdateJobPayload = z.infer<typeof updateJobSchema>;
 
-export const COLUMN_CONFIG: Record<
-  JobStatus,
-  { readonly label: string; readonly color: string }
-> = {
-  applied: { label: "Applied", color: "bg-[oklch(0.75_0.15_70)]" },
-  interview: { label: "Interview", color: "bg-primary" },
-  offer: { label: "Offer", color: "bg-[oklch(0.65_0.18_145)]" },
-  rejected: { label: "Rejected", color: "bg-muted-foreground" },
-};
+export const COLUMN_CONFIG: Record<JobStatus, { readonly label: string; readonly color: string }> =
+  {
+    applied: { label: "To Do", color: "bg-[oklch(0.75_0.15_70)]" },
+    interview: { label: "In Progress", color: "bg-primary" },
+    offer: { label: "Done", color: "bg-[oklch(0.65_0.18_145)]" },
+    rejected: { label: "On Hold", color: "bg-muted-foreground" },
+  };

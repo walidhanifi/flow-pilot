@@ -1,18 +1,16 @@
-import { Settings } from "lucide-react";
-import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { redirect } from "next/navigation";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { SettingsView } from "@/components/dashboard/settings-view";
 
-export default function SettingsPage() {
-  return (
-    <ComingSoon
-      icon={Settings}
-      title="Settings"
-      description="Customise Flow Pilot to match the way you work."
-      features={[
-        "Profile and account management",
-        "Notification preferences and digest emails",
-        "Theme customisation — light, dark, and system",
-        "Data export and account deletion",
-      ]}
-    />
-  );
+export const dynamic = "force-dynamic";
+
+export default async function SettingsPage() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
+  return <SettingsView email={user.email ?? ""} />;
 }

@@ -142,6 +142,18 @@ export const dynamic = "force-dynamic";
 
 Without this, Next.js attempts to prerender them at build time and the Supabase client throws because env vars are not available during static generation. This applies to any route that touches auth or the database.
 
+## UI Library — reactbits.dev
+
+Always check **https://reactbits.dev/** for patterns and components before writing custom UI from scratch, when working on:
+
+- Animated backgrounds (dot-grids, gradient blobs, particle fields)
+- Glassmorphism cards and modals
+- Animated text effects (typewriter, fade-in, split text)
+- Cursor effects and hover interactions
+- Decorative elements (borders, glows, shimmer)
+
+Only use reactbits.dev patterns where they add genuine visual value — not on functional forms, tables, or data-dense views. Favour the existing Tailwind/shadcn primitives for those.
+
 ## README Maintenance
 
 You are responsible for keeping README.md up to date. After every task that adds, completes, or plans a feature:

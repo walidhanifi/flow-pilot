@@ -97,11 +97,11 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByText("Applied")).toBeInTheDocument();
+      expect(screen.getByText("To Do")).toBeInTheDocument();
     });
-    expect(screen.getByText("Interview")).toBeInTheDocument();
-    expect(screen.getByText("Offer")).toBeInTheDocument();
-    expect(screen.getByText("Rejected")).toBeInTheDocument();
+    expect(screen.getByText("In Progress")).toBeInTheDocument();
+    expect(screen.getByText("Done")).toBeInTheDocument();
+    expect(screen.getByText("On Hold")).toBeInTheDocument();
   });
 
   it("renders job cards after loading", async () => {
@@ -113,26 +113,26 @@ describe("KanbanBoard", () => {
     expect(screen.getByText("Beta Inc")).toBeInTheDocument();
   });
 
-  it("renders Add job button", async () => {
+  it("renders Add item button", async () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /add job/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /add item/i })).toBeInTheDocument();
     });
   });
 
-  it("opens modal when Add job is clicked", async () => {
+  it("opens modal when Add item is clicked", async () => {
     const user = userEvent.setup();
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /add job/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /add item/i })).toBeInTheDocument();
     });
 
-    await user.click(screen.getByRole("button", { name: /add job/i }));
+    await user.click(screen.getByRole("button", { name: /add item/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("Add a job")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Add item" })).toBeInTheDocument();
     });
   });
 
@@ -157,7 +157,7 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByText(/drag jobs between columns/i)).toBeInTheDocument();
+      expect(screen.getByText(/drag items between columns/i)).toBeInTheDocument();
     });
   });
 });

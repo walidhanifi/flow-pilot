@@ -50,7 +50,7 @@ describe("AddJobModal", () => {
   it("renders when open", () => {
     render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
-    expect(screen.getByText("Add a job")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Add item" })).toBeInTheDocument();
     expect(screen.getByLabelText(/company/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/role/i)).toBeInTheDocument();
   });
@@ -58,14 +58,13 @@ describe("AddJobModal", () => {
   it("does not render when closed", () => {
     render(<AddJobModal open={false} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
-    expect(screen.queryByText("Add a job")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Add item" })).not.toBeInTheDocument();
   });
 
   it("shows validation error for empty company", async () => {
     render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
-    // Use fireEvent.submit to bypass native HTML5 required validation
-    const form = screen.getByRole("button", { name: /add job/i }).closest("form")!;
+    const form = screen.getByRole("button", { name: /add item/i }).closest("form")!;
     fireEvent.submit(form);
 
     await waitFor(() => {
@@ -80,8 +79,7 @@ describe("AddJobModal", () => {
     render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
-    // Use fireEvent.submit to bypass native HTML5 required validation
-    const form = screen.getByRole("button", { name: /add job/i }).closest("form")!;
+    const form = screen.getByRole("button", { name: /add item/i }).closest("form")!;
     fireEvent.submit(form);
 
     await waitFor(() => {
@@ -96,7 +94,7 @@ describe("AddJobModal", () => {
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
     await user.type(screen.getByLabelText(/role/i), "Frontend Engineer");
 
-    const submitButton = screen.getByRole("button", { name: /add job/i });
+    const submitButton = screen.getByRole("button", { name: /add item/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -121,14 +119,13 @@ describe("AddJobModal", () => {
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
     await user.type(screen.getByLabelText(/role/i), "Engineer");
 
-    const submitButton = screen.getByRole("button", { name: /add job/i });
+    const submitButton = screen.getByRole("button", { name: /add item/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText("Failed to add job. Please try again.")).toBeInTheDocument();
+      expect(screen.getByText("Failed to add item. Please try again.")).toBeInTheDocument();
     });
 
-    // Should NOT close the modal
     expect(mockOnOpenChange).not.toHaveBeenCalledWith(false);
   });
 
@@ -148,7 +145,7 @@ describe("AddJobModal", () => {
     await user.type(screen.getByLabelText(/role/i), "Dev");
     await user.type(screen.getByPlaceholderText(/example\.com/), "not-a-url");
 
-    const submitButton = screen.getByRole("button", { name: /add job/i });
+    const submitButton = screen.getByRole("button", { name: /add item/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {

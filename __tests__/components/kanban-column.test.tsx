@@ -105,7 +105,7 @@ describe("KanbanColumn", () => {
         isLoading={false}
       />
     );
-    expect(screen.getByText("No jobs yet")).toBeInTheDocument();
+    expect(screen.getByText("Nothing here yet")).toBeInTheDocument();
   });
 
   it("shows skeletons when loading", () => {
@@ -132,7 +132,7 @@ describe("KanbanColumn", () => {
         isLoading={true}
       />
     );
-    expect(screen.queryByText("No jobs yet")).not.toBeInTheDocument();
+    expect(screen.queryByText("Nothing here yet")).not.toBeInTheDocument();
   });
 
   it("shows rename button when onRename is provided", () => {

@@ -5,12 +5,7 @@ import { createJobSchema } from "@/types/jobs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { Job, CreateJobPayload } from "@/types/jobs";
 
@@ -20,11 +15,7 @@ interface AddJobModalProps {
   readonly addJob: UseMutationResult<Job, Error, CreateJobPayload>;
 }
 
-export function AddJobModal({
-  open,
-  onOpenChange,
-  addJob,
-}: AddJobModalProps) {
+export function AddJobModal({ open, onOpenChange, addJob }: AddJobModalProps) {
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
   const [url, setUrl] = useState("");
@@ -62,7 +53,7 @@ export function AddJobModal({
       resetForm();
       onOpenChange(false);
     } catch {
-      setError("Failed to add job. Please try again.");
+      setError("Failed to add item. Please try again.");
     }
   }
 
@@ -76,7 +67,7 @@ export function AddJobModal({
     >
       <DialogContent className="sm:max-w-[440px]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Add a job</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Add item</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 pt-2">
@@ -99,9 +90,7 @@ export function AddJobModal({
               className="h-11 rounded-xl border-border/80 bg-muted/40 px-4 text-sm transition-colors focus-visible:bg-background"
             />
             {fieldErrors.company && (
-              <p className="text-sm font-medium text-destructive">
-                {fieldErrors.company}
-              </p>
+              <p className="text-sm font-medium text-destructive">{fieldErrors.company}</p>
             )}
           </div>
 
@@ -118,30 +107,23 @@ export function AddJobModal({
               className="h-11 rounded-xl border-border/80 bg-muted/40 px-4 text-sm transition-colors focus-visible:bg-background"
             />
             {fieldErrors.role && (
-              <p className="text-sm font-medium text-destructive">
-                {fieldErrors.role}
-              </p>
+              <p className="text-sm font-medium text-destructive">{fieldErrors.role}</p>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="url" className="text-sm font-semibold">
-              URL{" "}
-              <span className="font-normal text-muted-foreground">
-                (optional)
-              </span>
+              URL <span className="font-normal text-muted-foreground">(optional)</span>
             </Label>
             <Input
               id="url"
-              placeholder="https://example.com/jobs/123"
+              placeholder="https://example.com/item"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="h-11 rounded-xl border-border/80 bg-muted/40 px-4 text-sm transition-colors focus-visible:bg-background"
             />
             {fieldErrors.url && (
-              <p className="text-sm font-medium text-destructive">
-                {fieldErrors.url}
-              </p>
+              <p className="text-sm font-medium text-destructive">{fieldErrors.url}</p>
             )}
           </div>
 
@@ -150,7 +132,7 @@ export function AddJobModal({
             disabled={addJob.isPending}
             className="mt-1 h-11 rounded-xl text-sm font-semibold shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
           >
-            {addJob.isPending ? "Adding..." : "Add job"}
+            {addJob.isPending ? "Adding..." : "Add item"}
           </Button>
         </form>
       </DialogContent>
