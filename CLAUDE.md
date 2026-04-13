@@ -114,3 +114,10 @@ To keep that migration easy:
 ## Commits
 
 use conventional commits with short lowercase messages like feat: add auth or fix: handle null user
+
+## README Maintenance
+
+You are responsible for keeping README.md up to date. After every task that adds, completes, or plans a feature:
+- Move completed items from "To Do" to "Done"
+- Add new planned features to "To Do" or "Future / AI Features"
+- Commit the README update alongside the code change

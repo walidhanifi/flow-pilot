@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flow Pilot
 
-## Getting Started
+AI-enabled kanban board for managing your workflow smarter.
 
-First, run the development server:
+Drag-and-drop task management with AI-powered insights, built for teams and individuals that move fast.
+
+**Live:** _deploying soon_
+
+---
+
+## Tech Stack
+
+| Layer      | Technology                              |
+| ---------- | --------------------------------------- |
+| Framework  | Next.js 15 (App Router) + TypeScript    |
+| Styling    | Tailwind CSS + shadcn/ui                |
+| Auth       | Supabase Auth (email)                   |
+| Database   | Supabase (Postgres + RLS)               |
+| Data       | TanStack Query (React Query)            |
+| Validation | Zod (client + server)                   |
+| Testing    | Vitest + Testing Library                |
+| Hosting    | Vercel                                  |
+
+---
+
+## Local Development
+
+### First time setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/walidhanifi/flow-pilot
+cd flow-pilot
+npm install
+cp .env.local.example .env.local   # fill in your Supabase credentials
+npx supabase link --project-ref <your-ref>
+npx supabase db push               # apply all migrations
+npm run dev                        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Day to day
 
-## Learn More
+```bash
+# Pull latest + install any new deps
+git pull && npm install
 
-To learn more about Next.js, take a look at the following resources:
+# Create a feature branch
+git checkout -b feat/my-feature
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Develop, then run tests
+npm test
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Commit and push
+git add <files>
+git commit -m "feat: add my feature"
+git push
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Progress
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Done
+
+- [x] Project setup (Next.js 15, TypeScript, Tailwind, shadcn/ui)
+- [x] Vercel deployment pipeline
+- [x] Supabase auth integration (email login + signup)
+- [x] Auth screens (login + signup) with split-panel layout
+- [x] Protected dashboard route with middleware auth guard
+- [x] Dashboard layout with header (user email + logout)
+- [x] Kanban board with drag-and-drop between columns
+- [x] Job cards (title, company, status, notes)
+- [x] Add job modal with Zod-validated form
+- [x] Skeleton loading states for job cards
+- [x] REST API routes for jobs (list, create, update, delete)
+- [x] Postgres migrations with RLS policies
+- [x] Notes field on jobs (DB + API + UI)
+- [x] Unit tests for header component (Vitest + Testing Library)
+
+### To Do
+
+- [ ] Edit job details inline or via modal
+- [ ] Delete job with confirmation
+- [ ] Filter and search jobs on the board
+- [ ] Column customization (rename, add, remove)
+- [ ] Due dates on job cards
+- [ ] Label / tag system for jobs
+- [ ] User settings page (profile, preferences)
+- [ ] Keyboard shortcuts for power users
+- [ ] Mobile-responsive polish
+- [ ] E2E tests for critical flows (Playwright)
+
+### Future / AI Features
+
+- [ ] AI task prioritization suggestions
+- [ ] AI-generated status summaries ("your week at a glance")
+- [ ] AI deadline estimation based on task complexity
+- [ ] Natural language task creation ("add a bug fix card to In Progress")
+- [ ] AI task breakdown (split large cards into subtasks)
+- [ ] Chrome extension — add tasks from any webpage
+- [ ] Expo mobile app (Turborepo monorepo)
+- [ ] Notifications (in-app + email)
+- [ ] Team / collaborative boards (multi-user)
+- [ ] Activity log and audit trail
+- [ ] Analytics (throughput, cycle time, velocity)
