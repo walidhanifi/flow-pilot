@@ -3,6 +3,23 @@
 AI-enabled kanban board. Next.js web app, potential Expo mobile expansion later.
 Smart kanban with AI-powered features and a chrome extension.
 
+## Execution Mode
+
+Unless explicitly stated otherwise, default to:
+
+**MINIMAL DEMO MODE**
+
+- Implement the smallest possible change to make the feature work
+- Do NOT refactor existing code unless absolutely required
+- Do NOT introduce new abstractions (hooks, APIs, schemas) unless unavoidable
+- Prefer modifying existing files over creating new ones
+- Skip tests unless explicitly requested
+- Skip advanced error handling and edge cases
+- Keep doing UI polish (animations, gradients, etc.)
+- Ignore “best practices” if they increase code size or complexity
+
+This project is often used for quick demos — correctness is less important than speed and simplicity.
+
 ## Stack
 
 - Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui
@@ -152,7 +169,7 @@ Always check **https://reactbits.dev/** for patterns and components before writi
 - Cursor effects and hover interactions
 - Decorative elements (borders, glows, shimmer)
 
-Only use reactbits.dev patterns where they add genuine visual value — not on functional forms, tables, or data-dense views. Favour the existing Tailwind/shadcn primitives for those.
+Only use reactbits.dev patterns where they add genuine visual value. Favour the existing Tailwind/shadcn primitives for those.
 
 ## README Maintenance
 
