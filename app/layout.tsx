@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tracker",
-  description: "Track your job applications in one place",
+  title: "Flow Pilot",
+  description: "AI-enabled kanban board for managing your workflow",
 };
 
 export default function RootLayout({

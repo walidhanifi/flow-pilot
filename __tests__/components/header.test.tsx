@@ -30,7 +30,7 @@ describe("Header", () => {
   it("displays the app name", () => {
     render(<Header email="test@example.com" />);
 
-    expect(screen.getByText("Tracker")).toBeInTheDocument();
+    expect(screen.getByText("Flow Pilot")).toBeInTheDocument();
   });
 
   it("renders a logout button", () => {

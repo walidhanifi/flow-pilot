@@ -31,7 +31,7 @@ export function Header({ email }: HeaderProps) {
   return (
     <header className="flex items-center justify-between border-b border-border/60 bg-card px-6 py-4">
       <h1 className="text-lg font-bold tracking-tight text-primary">
-        Tracker
+        Flow Pilot
       </h1>
       <div className="flex items-center gap-4">
         <span className="text-sm font-medium text-muted-foreground">

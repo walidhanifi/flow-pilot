@@ -15,19 +15,19 @@ export default function AuthLayout({
         <div className="relative z-10 flex flex-col justify-between h-full p-12">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-white">
-              Tracker
+              Flow Pilot
             </h1>
           </div>
           <div className="max-w-sm">
             <blockquote className="text-xl font-semibold leading-relaxed text-white/95">
-              &ldquo;The job search is a full-time job. Track it like one.&rdquo;
+              &ldquo;Your workflow, elevated by AI.&rdquo;
             </blockquote>
             <p className="mt-4 text-sm font-medium text-white/70">
-              Organize applications, track progress, land the role.
+              Smarter kanban. AI-powered insights. Ship faster.
             </p>
           </div>
           <div className="text-xs text-white/40">
-            Built for focused job seekers.
+            Built for teams that move fast.
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@ export default function AuthLayout({
         {/* Mobile logo */}
         <div className="mb-10 lg:hidden">
           <h1 className="text-2xl font-bold tracking-tight text-primary">
-            Tracker
+            Flow Pilot
           </h1>
         </div>
         <div className="w-full max-w-[420px]">{children}</div>

@@ -17,6 +17,7 @@ export interface Job {
   readonly url: string;
   readonly status: JobStatus;
   readonly position: number;
+  readonly notes: string;
   readonly created_at: string;
 }
 
@@ -34,10 +35,26 @@ export const updateJobSchema = z
   .object({
     status: z.enum(JOB_STATUSES).optional(),
     position: z.number().int().min(0).optional(),
+    company: z.string().min(1, "Company name is required").optional(),
+    role: z.string().min(1, "Role is required").optional(),
+    url: z
+      .string()
+      .url("Please enter a valid URL")
+      .refine((u) => /^https?:\/\//i.test(u), "URL must start with http:// or https://")
+      .or(z.literal(""))
+      .optional(),
+    notes: z.string().optional(),
   })
-  .refine((d) => d.status !== undefined || d.position !== undefined, {
-    message: "At least one of status or position must be provided",
-  });
+  .refine(
+    (d) =>
+      d.status !== undefined ||
+      d.position !== undefined ||
+      d.company !== undefined ||
+      d.role !== undefined ||
+      d.url !== undefined ||
+      d.notes !== undefined,
+    { message: "At least one field must be provided" }
+  );
 
 export type CreateJobPayload = z.infer<typeof createJobSchema>;
 export type UpdateJobPayload = z.infer<typeof updateJobSchema>;

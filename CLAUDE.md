@@ -1,15 +1,17 @@
-# Tracker App
+# Flow Pilot
 
-Job tracker app. Next.js web app, potential Expo mobile expansion later.
-Inspired by https://huntr.co/. Clone of it, with kanban style job hunting, and chrome extension.
+AI-enabled kanban board. Next.js web app, potential Expo mobile expansion later.
+Smart kanban with AI-powered features and a chrome extension.
 
 ## Stack
+
 - Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui
 - Supabase (Postgres, auth, storage)
 - Zod for validation (client and server)
 - TanStack Query (React Query) for client-side data fetching
 
 ## Architecture
+
 - Server Components by default — no `use client` unless interactivity or browser APIs needed
 - Client Components: `use client` at top, keep minimal, extract logic to hooks
 - API routes in `app/api/` for all backend logic — never query DB from client components
@@ -17,6 +19,7 @@ Inspired by https://huntr.co/. Clone of it, with kanban style job hunting, and c
 - Middleware in `middleware.ts` refreshes auth tokens and protects routes globally
 
 ## File Structure
+
 ```
 src/
   app/
@@ -38,45 +41,54 @@ supabase/
 ```
 
 ## Database
+
 - All queries via Supabase client with RLS enabled — never bypass RLS
 - Always `select()` with explicit columns, never `select('*')`
 - Always `.limit()` on user-facing queries
 - Migrations in `supabase/migrations/` only
 
 ## Authentication
+
 - Use `createServerClient()` from `@supabase/ssr` in Server Components and API routes
 - Use `createBrowserClient()` from `@supabase/ssr` in Client Components
 - Always use `getUser()` for auth checks — never trust `getSession()` alone
 - Middleware handles token refresh and route protection globally
 
 ## Data Fetching
+
 - All data fetching logic in custom hooks (e.g. `useWorkouts()`, `useUser()`)
 - Never fetch inline in components — hooks are reusable when mobile is added
 - Use TanStack Query for client-side fetching, caching, and invalidation
 - Business logic (calculations, transformations) in `lib/utils.ts` — no framework deps
 
 ## Validation
+
 - Zod schemas for all API request bodies — validate at route handler before touching DB
 - Zod schemas for all forms on the client
 - All schemas in `types/` folder, shared between client and server
 
 ## API Design
+
 - RESTful route naming: `/api/workouts`, `/api/workouts/[id]`
 - Consistent response format:
+
 ```ts
-  type ApiResponse<T> =
-    | { success: true; data: T }
-    | { success: false; error: string; code?: string }
+type ApiResponse<T> =
+  | { success: true; data: T }
+  | { success: false; error: string; code?: string };
 ```
+
 - Validate JWT at the top of every API route before doing anything
 
 ## Code Style
+
 - No emojis in code or comments
 - Immutable patterns — spread operator, never mutate objects directly
 - No logic in page files — pages compose components only
 - TypeScript everywhere, no plain JS
 
 ## Environment Variables
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
@@ -85,13 +97,20 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ## Git Workflow
+
 - `feat:` new features, `fix:` bugs, `refactor:` code changes
 - Feature branches from `main`, merge via PR
 - Vercel auto-deploys preview on PR, production on merge to `main`
 
 ## Future Mobile Expansion
+
 A React Native / Expo mobile app may be added later in a Turborepo monorepo.
 To keep that migration easy:
+
 - All hooks in `hooks/` must have zero framework dependencies beyond React
 - All business logic in `lib/utils.ts` must be portable (no Next.js imports)
 - API routes must be the single source of truth — mobile will call the same endpoints
+
+## Commits
+
+use conventional commits with short lowercase messages like feat: add auth or fix: handle null user
