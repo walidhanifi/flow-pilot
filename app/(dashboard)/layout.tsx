@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { Header } from "@/components/dashboard/header";
+import { Sidebar } from "@/components/dashboard/sidebar";
 
 export const dynamic = "force-dynamic";
 
@@ -19,9 +19,9 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex flex-1 flex-col">
-      <Header email={user.email ?? ""} />
-      <main className="flex-1 p-6">{children}</main>
+    <div className="flex min-h-screen">
+      <Sidebar email={user.email ?? ""} />
+      <main className="flex-1 overflow-y-auto lg:ml-60 pb-20 lg:pb-0">{children}</main>
     </div>
   );
 }

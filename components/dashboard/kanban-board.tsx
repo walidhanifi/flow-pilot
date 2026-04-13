@@ -13,9 +13,10 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { Plus } from "lucide-react";
+import { Plus, Eye } from "lucide-react";
 import { useJobs } from "@/hooks/use-jobs";
-import { JOB_STATUSES, COLUMN_CONFIG } from "@/types/jobs";
+import { useColumnSettings } from "@/hooks/use-column-settings";
+import { JOB_STATUSES } from "@/types/jobs";
 import type { Job, JobStatus } from "@/types/jobs";
 import { KanbanColumn } from "@/components/dashboard/kanban-column";
 import { JobCard } from "@/components/dashboard/job-card";
@@ -23,16 +24,11 @@ import { AddJobModal } from "@/components/dashboard/add-job-modal";
 import { Button } from "@/components/ui/button";
 
 export function KanbanBoard() {
-  const {
-    jobs,
-    jobsByStatus,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    addJob,
-    updateJob,
-  } = useJobs();
+  const { jobs, jobsByStatus, isLoading, isError, error, refetch, addJob, updateJob, deleteJob } =
+    useJobs();
+
+  const { visibleSettings, settings, hiddenCount, renameColumn, toggleColumn } =
+    useColumnSettings();
 
   const [activeJob, setActiveJob] = useState<Job | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -61,14 +57,11 @@ export function KanbanBoard() {
       const { active, over } = event;
       if (!over) return;
 
-      const activeData = active.data.current as
-        | { type: string; job: Job }
-        | undefined;
+      const activeData = active.data.current as { type: string; job: Job } | undefined;
       if (!activeData || activeData.type !== "job") return;
 
       const draggedJob = activeData.job;
 
-      // Determine target column
       let targetStatus: JobStatus;
       const overData = over.data.current as
         | { type: string; status?: JobStatus; job?: Job }
@@ -79,7 +72,6 @@ export function KanbanBoard() {
       } else if (overData?.type === "job" && overData.job) {
         targetStatus = overData.job.status;
       } else {
-        // over.id might be a column status directly
         if (JOB_STATUSES.includes(over.id as JobStatus)) {
           targetStatus = over.id as JobStatus;
         } else {
@@ -87,40 +79,26 @@ export function KanbanBoard() {
         }
       }
 
-      // Determine new position
       const targetJobs = jobsByStatus[targetStatus];
       let newPosition: number;
 
       if (overData?.type === "job" && overData.job) {
-        // Dropped on a specific card — take its position
         newPosition = overData.job.position;
       } else {
-        // Dropped on column — put at end
-        newPosition =
-          targetJobs.length > 0
-            ? targetJobs[targetJobs.length - 1].position + 1
-            : 0;
+        newPosition = targetJobs.length > 0 ? targetJobs[targetJobs.length - 1].position + 1 : 0;
       }
 
-      // Only update if something changed
-      if (
-        draggedJob.status === targetStatus &&
-        draggedJob.position === newPosition
-      ) {
-        return;
-      }
+      if (draggedJob.status === targetStatus && draggedJob.position === newPosition) return;
 
-      updateJob.mutate({
-        id: draggedJob.id,
-        status: targetStatus,
-        position: newPosition,
-      });
+      updateJob.mutate({ id: draggedJob.id, status: targetStatus, position: newPosition });
     },
     [jobsByStatus, updateJob]
   );
 
+  const hiddenSettings = settings.filter((s) => !s.visible);
+
   return (
-    <div>
+    <div className="flex h-full flex-col p-6">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -139,7 +117,7 @@ export function KanbanBoard() {
         </Button>
       </div>
 
-      {/* Error banner — board still renders below */}
+      {/* Error banner */}
       {isError && (
         <div className="mb-4 flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3">
           <p className="text-sm font-medium text-destructive">
@@ -156,23 +134,47 @@ export function KanbanBoard() {
         </div>
       )}
 
-      {/* Board */}
+      {/* Hidden columns restore bar */}
+      {hiddenCount > 0 && (
+        <div className="mb-4 flex flex-wrap items-center gap-2 rounded-xl border border-border/60 bg-muted/40 px-4 py-2.5">
+          <span className="text-xs text-muted-foreground">
+            {hiddenCount} hidden column{hiddenCount > 1 ? "s" : ""}
+          </span>
+          {hiddenSettings.map((s) => (
+            <button
+              key={s.status}
+              onClick={() => toggleColumn(s.status)}
+              className="flex items-center gap-1 rounded-md border border-border/60 bg-background px-2 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+            >
+              <Eye size={11} />
+              {s.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Board — horizontal scroll */}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {JOB_STATUSES.map((status) => (
-            <KanbanColumn
-              key={status}
-              status={status}
-              label={COLUMN_CONFIG[status].label}
-              colorClass={COLUMN_CONFIG[status].color}
-              jobs={jobsByStatus[status]}
-              isLoading={isLoading}
-            />
+        <div className="flex gap-4 overflow-x-auto pb-4">
+          {visibleSettings.map((setting) => (
+            <div key={setting.status} className="w-72 shrink-0">
+              <KanbanColumn
+                status={setting.status}
+                label={setting.label}
+                colorClass={setting.color}
+                jobs={jobsByStatus[setting.status]}
+                isLoading={isLoading}
+                onDeleteJob={(id) => deleteJob.mutate(id)}
+                deletingJobId={deleteJob.isPending ? (deleteJob.variables as string) : undefined}
+                onRename={renameColumn}
+                onHide={toggleColumn}
+              />
+            </div>
           ))}
         </div>
 
@@ -181,11 +183,7 @@ export function KanbanBoard() {
         </DragOverlay>
       </DndContext>
 
-      <AddJobModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        addJob={addJob}
-      />
+      <AddJobModal open={modalOpen} onOpenChange={setModalOpen} addJob={addJob} />
     </div>
   );
 }

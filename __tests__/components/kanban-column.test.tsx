@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { KanbanColumn } from "@/components/dashboard/kanban-column";
 import type { Job } from "@/types/jobs";
 
@@ -117,7 +118,6 @@ describe("KanbanColumn", () => {
         isLoading={true}
       />
     );
-    // JobCardSkeleton renders 3 skeleton cards by default
     const skeletons = container.querySelectorAll("[data-slot='skeleton']");
     expect(skeletons.length).toBeGreaterThan(0);
   });
@@ -133,5 +133,70 @@ describe("KanbanColumn", () => {
       />
     );
     expect(screen.queryByText("No jobs yet")).not.toBeInTheDocument();
+  });
+
+  it("shows rename button when onRename is provided", () => {
+    render(
+      <KanbanColumn
+        status="applied"
+        label="Applied"
+        colorClass="bg-primary"
+        jobs={[]}
+        isLoading={false}
+        onRename={vi.fn()}
+      />
+    );
+    expect(screen.getByTitle("Rename column")).toBeInTheDocument();
+  });
+
+  it("shows hide button when onHide is provided", () => {
+    render(
+      <KanbanColumn
+        status="applied"
+        label="Applied"
+        colorClass="bg-primary"
+        jobs={[]}
+        isLoading={false}
+        onHide={vi.fn()}
+      />
+    );
+    expect(screen.getByTitle("Hide column")).toBeInTheDocument();
+  });
+
+  it("enters rename editing mode on pencil click", async () => {
+    const user = userEvent.setup();
+    render(
+      <KanbanColumn
+        status="applied"
+        label="Applied"
+        colorClass="bg-primary"
+        jobs={[]}
+        isLoading={false}
+        onRename={vi.fn()}
+      />
+    );
+    await user.click(screen.getByTitle("Rename column"));
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+  });
+
+  it("calls onRename when edit is committed", async () => {
+    const user = userEvent.setup();
+    const onRename = vi.fn();
+    render(
+      <KanbanColumn
+        status="applied"
+        label="Applied"
+        colorClass="bg-primary"
+        jobs={[]}
+        isLoading={false}
+        onRename={onRename}
+      />
+    );
+    await user.click(screen.getByTitle("Rename column"));
+    const input = screen.getByRole("textbox");
+    await user.clear(input);
+    await user.type(input, "New Name");
+    await user.keyboard("{Enter}");
+    expect(onRename).toHaveBeenCalledWith("applied", "New Name");
   });
 });

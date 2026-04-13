@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { JobCard } from "@/components/dashboard/job-card";
 import type { Job } from "@/types/jobs";
 
@@ -54,6 +55,11 @@ describe("JobCard", () => {
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
+  it("renders domain name in url chip", () => {
+    render(<JobCard job={MOCK_JOB} />);
+    expect(screen.getByText("acme.com")).toBeInTheDocument();
+  });
+
   it("does not render url link when url is empty", () => {
     const jobWithoutUrl: Job = { ...MOCK_JOB, url: "" };
     render(<JobCard job={jobWithoutUrl} />);
@@ -71,5 +77,35 @@ describe("JobCard", () => {
     const { container } = render(<JobCard job={MOCK_JOB} />);
     const card = container.firstChild as HTMLElement;
     expect(card.className).toContain("hover:-translate-y-0.5");
+  });
+
+  it("shows delete button on hover when onDelete is provided", () => {
+    render(<JobCard job={MOCK_JOB} onDelete={vi.fn()} />);
+    const btn = screen.getByRole("button");
+    expect(btn).toBeInTheDocument();
+  });
+
+  it("shows confirm state after first delete click", async () => {
+    const user = userEvent.setup();
+    render(<JobCard job={MOCK_JOB} onDelete={vi.fn()} />);
+    const btn = screen.getByRole("button");
+    await user.click(btn);
+    expect(screen.getByText("Confirm")).toBeInTheDocument();
+  });
+
+  it("calls onDelete after second click", async () => {
+    const user = userEvent.setup();
+    const onDelete = vi.fn();
+    render(<JobCard job={MOCK_JOB} onDelete={onDelete} />);
+    const btn = screen.getByRole("button");
+    await user.click(btn);
+    await user.click(btn);
+    expect(onDelete).toHaveBeenCalledOnce();
+  });
+
+  it("shows notes icon when job has notes", () => {
+    const jobWithNotes: Job = { ...MOCK_JOB, notes: "Follow up Monday" };
+    render(<JobCard job={jobWithNotes} />);
+    expect(document.querySelector("[title='Has notes']")).toBeInTheDocument();
   });
 });
