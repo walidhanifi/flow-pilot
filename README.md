@@ -4,7 +4,7 @@ AI-enabled kanban board for managing your workflow smarter.
 
 Drag-and-drop task management with AI-powered insights, built for teams and individuals that move fast.
 
-**Live:** _deploying soon_
+👉 **[Live Link](https://flow-pilot-beta.vercel.app/)**
 
 ---
 
