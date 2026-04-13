@@ -31,6 +31,7 @@ const MOCK_JOB: Job = {
   url: "https://acme.com/jobs/1",
   status: "applied",
   position: 0,
+  notes: "",
   created_at: "2026-01-01T00:00:00Z",
 };
 

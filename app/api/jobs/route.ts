@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createJobSchema } from "@/types/jobs";
 import { NextResponse, type NextRequest } from "next/server";
 
-const JOB_COLUMNS = "id, user_id, company, role, url, status, position, created_at";
+const JOB_COLUMNS = "id, user_id, company, role, url, status, position, notes, created_at";
 
 export async function GET() {
   const supabase = await createServerSupabaseClient();
@@ -11,10 +11,7 @@ export async function GET() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
   const { data, error } = await supabase
@@ -46,20 +43,14 @@ export async function POST(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { success: false, error: "Invalid JSON body" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, error: "Invalid JSON body" }, { status: 400 });
   }
   const result = createJobSchema.safeParse(body);
 

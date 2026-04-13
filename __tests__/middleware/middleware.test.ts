@@ -13,7 +13,7 @@ vi.mock("@supabase/ssr", () => ({
 }));
 
 // Must import after mocks are set up
-const { middleware } = await import("@/middleware");
+const { proxy: middleware } = await import("@/proxy");
 
 function createRequest(url: string): NextRequest {
   return new NextRequest(new URL(url, "http://localhost:3000"));
@@ -36,9 +36,7 @@ describe("middleware", () => {
       const response = await middleware(request);
 
       expect(response.status).toBe(307);
-      expect(new URL(response.headers.get("location")!).pathname).toBe(
-        "/login"
-      );
+      expect(new URL(response.headers.get("location")!).pathname).toBe("/login");
     });
 
     it("redirects /dashboard/settings to /login", async () => {
@@ -46,9 +44,7 @@ describe("middleware", () => {
       const response = await middleware(request);
 
       expect(response.status).toBe(307);
-      expect(new URL(response.headers.get("location")!).pathname).toBe(
-        "/login"
-      );
+      expect(new URL(response.headers.get("location")!).pathname).toBe("/login");
     });
 
     it("allows access to /login", async () => {
@@ -84,9 +80,7 @@ describe("middleware", () => {
       const response = await middleware(request);
 
       expect(response.status).toBe(307);
-      expect(new URL(response.headers.get("location")!).pathname).toBe(
-        "/login"
-      );
+      expect(new URL(response.headers.get("location")!).pathname).toBe("/login");
     });
   });
 
@@ -102,9 +96,7 @@ describe("middleware", () => {
       const response = await middleware(request);
 
       expect(response.status).toBe(307);
-      expect(new URL(response.headers.get("location")!).pathname).toBe(
-        "/dashboard"
-      );
+      expect(new URL(response.headers.get("location")!).pathname).toBe("/dashboard");
     });
 
     it("redirects /signup to /dashboard", async () => {
@@ -112,9 +104,7 @@ describe("middleware", () => {
       const response = await middleware(request);
 
       expect(response.status).toBe(307);
-      expect(new URL(response.headers.get("location")!).pathname).toBe(
-        "/dashboard"
-      );
+      expect(new URL(response.headers.get("location")!).pathname).toBe("/dashboard");
     });
 
     it("allows access to /dashboard", async () => {

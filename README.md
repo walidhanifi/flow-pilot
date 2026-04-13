@@ -10,16 +10,16 @@ Drag-and-drop task management with AI-powered insights, built for teams and indi
 
 ## Tech Stack
 
-| Layer      | Technology                              |
-| ---------- | --------------------------------------- |
-| Framework  | Next.js 15 (App Router) + TypeScript    |
-| Styling    | Tailwind CSS + shadcn/ui                |
-| Auth       | Supabase Auth (email)                   |
-| Database   | Supabase (Postgres + RLS)               |
-| Data       | TanStack Query (React Query)            |
-| Validation | Zod (client + server)                   |
-| Testing    | Vitest + Testing Library                |
-| Hosting    | Vercel                                  |
+| Layer      | Technology                           |
+| ---------- | ------------------------------------ |
+| Framework  | Next.js 15 (App Router) + TypeScript |
+| Styling    | Tailwind CSS + shadcn/ui             |
+| Auth       | Supabase Auth (email)                |
+| Database   | Supabase (Postgres + RLS)            |
+| Data       | TanStack Query (React Query)         |
+| Validation | Zod (client + server)                |
+| Testing    | Vitest + Testing Library             |
+| Hosting    | Vercel                               |
 
 ---
 
@@ -74,16 +74,18 @@ git push
 - [x] Vercel deployment pipeline
 - [x] Supabase auth integration (email login + signup)
 - [x] Auth screens (login + signup) with split-panel layout
-- [x] Protected dashboard route with middleware auth guard
+- [x] Protected dashboard route with proxy (middleware) auth guard
 - [x] Dashboard layout with header (user email + logout)
 - [x] Kanban board with drag-and-drop between columns
 - [x] Job cards (title, company, status, notes)
 - [x] Add job modal with Zod-validated form
 - [x] Skeleton loading states for job cards
-- [x] REST API routes for jobs (list, create, update, delete)
+- [x] REST API routes for jobs (list, create, update, delete) — all fields including notes
 - [x] Postgres migrations with RLS policies
 - [x] Notes field on jobs (DB + API + UI)
-- [x] Unit tests for header component (Vitest + Testing Library)
+- [x] Unit tests — 134 tests across components, hooks, proxy (Vitest + Testing Library)
+- [x] Husky pre-commit (prettier + eslint) and pre-push (typecheck + test + build) hooks
+- [x] Env var validation with clear error messages on missing config
 
 ### To Do
 

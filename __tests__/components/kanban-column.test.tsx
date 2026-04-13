@@ -12,9 +12,7 @@ vi.mock("@dnd-kit/core", () => ({
 }));
 
 vi.mock("@dnd-kit/sortable", () => ({
-  SortableContext: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
+  SortableContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   verticalListSortingStrategy: {},
   useSortable: () => ({
     attributes: {},
@@ -39,6 +37,7 @@ const MOCK_JOBS: Job[] = [
     url: "https://acme.com",
     status: "applied",
     position: 0,
+    notes: "",
     created_at: "2026-01-01",
   },
   {
@@ -49,6 +48,7 @@ const MOCK_JOBS: Job[] = [
     url: "",
     status: "applied",
     position: 1,
+    notes: "",
     created_at: "2026-01-02",
   },
 ];

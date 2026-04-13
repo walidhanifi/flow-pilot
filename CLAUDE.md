@@ -73,9 +73,7 @@ supabase/
 - Consistent response format:
 
 ```ts
-type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; code?: string };
+type ApiResponse<T> = { success: true; data: T } | { success: false; error: string; code?: string };
 ```
 
 - Validate JWT at the top of every API route before doing anything
@@ -115,9 +113,27 @@ To keep that migration easy:
 
 use conventional commits with short lowercase messages like feat: add auth or fix: handle null user
 
+## Offline Testing — Always Before Pushing
+
+MANDATORY before every commit/push:
+
+1. `npm run typecheck` — catch type errors
+2. `npm run test` — run all unit tests
+3. `npm run build` — verify production build passes
+
+Or run all at once: `npm run check`
+
+These are also enforced by Husky:
+
+- **pre-commit**: prettier format + eslint fix on staged files
+- **pre-push**: typecheck + test + build
+
+Never push code that fails any of these checks locally.
+
 ## README Maintenance
 
 You are responsible for keeping README.md up to date. After every task that adds, completes, or plans a feature:
+
 - Move completed items from "To Do" to "Done"
 - Add new planned features to "To Do" or "Future / AI Features"
 - Commit the README update alongside the code change

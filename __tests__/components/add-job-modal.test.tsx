@@ -18,6 +18,7 @@ function createMockAddJob(
       url: "",
       status: "applied",
       position: 0,
+      notes: "",
       created_at: "2026-01-01",
     }),
     isPending: false,
@@ -38,22 +39,16 @@ function createMockAddJob(
 }
 
 describe("AddJobModal", () => {
-  let mockOnOpenChange: ReturnType<typeof vi.fn>;
+  let mockOnOpenChange: (open: boolean) => void;
   let mockAddJob: UseMutationResult<Job, Error, CreateJobPayload>;
 
   beforeEach(() => {
-    mockOnOpenChange = vi.fn();
+    mockOnOpenChange = vi.fn() as unknown as (open: boolean) => void;
     mockAddJob = createMockAddJob();
   });
 
   it("renders when open", () => {
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     expect(screen.getByText("Add a job")).toBeInTheDocument();
     expect(screen.getByLabelText(/company/i)).toBeInTheDocument();
@@ -61,25 +56,13 @@ describe("AddJobModal", () => {
   });
 
   it("does not render when closed", () => {
-    render(
-      <AddJobModal
-        open={false}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={false} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     expect(screen.queryByText("Add a job")).not.toBeInTheDocument();
   });
 
   it("shows validation error for empty company", async () => {
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     // Use fireEvent.submit to bypass native HTML5 required validation
     const form = screen.getByRole("button", { name: /add job/i }).closest("form")!;
@@ -94,13 +77,7 @@ describe("AddJobModal", () => {
 
   it("shows validation error for empty role", async () => {
     const user = userEvent.setup();
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
     // Use fireEvent.submit to bypass native HTML5 required validation
@@ -114,13 +91,7 @@ describe("AddJobModal", () => {
 
   it("submits valid form data and closes", async () => {
     const user = userEvent.setup();
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
     await user.type(screen.getByLabelText(/role/i), "Frontend Engineer");
@@ -145,13 +116,7 @@ describe("AddJobModal", () => {
     });
     const user = userEvent.setup();
 
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={failingAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={failingAddJob} />);
 
     await user.type(screen.getByLabelText(/company/i), "Acme Corp");
     await user.type(screen.getByLabelText(/role/i), "Engineer");
@@ -160,9 +125,7 @@ describe("AddJobModal", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Failed to add job. Please try again.")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Failed to add job. Please try again.")).toBeInTheDocument();
     });
 
     // Should NOT close the modal
@@ -172,26 +135,14 @@ describe("AddJobModal", () => {
   it("shows 'Adding...' text when pending", () => {
     const pendingAddJob = createMockAddJob({ isPending: true });
 
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={pendingAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={pendingAddJob} />);
 
     expect(screen.getByRole("button", { name: /adding/i })).toBeDisabled();
   });
 
   it("shows URL validation error for invalid url", async () => {
     const user = userEvent.setup();
-    render(
-      <AddJobModal
-        open={true}
-        onOpenChange={mockOnOpenChange}
-        addJob={mockAddJob}
-      />
-    );
+    render(<AddJobModal open={true} onOpenChange={mockOnOpenChange} addJob={mockAddJob} />);
 
     await user.type(screen.getByLabelText(/company/i), "Acme");
     await user.type(screen.getByLabelText(/role/i), "Dev");

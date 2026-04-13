@@ -14,6 +14,7 @@ const MOCK_JOBS: Job[] = [
     url: "https://acme.com/jobs/1",
     status: "applied",
     position: 0,
+    notes: "",
     created_at: "2026-01-01T00:00:00Z",
   },
   {
@@ -24,6 +25,7 @@ const MOCK_JOBS: Job[] = [
     url: "",
     status: "interview",
     position: 0,
+    notes: "",
     created_at: "2026-01-02T00:00:00Z",
   },
   {
@@ -34,6 +36,7 @@ const MOCK_JOBS: Job[] = [
     url: "https://gamma.com/careers",
     status: "applied",
     position: 1,
+    notes: "",
     created_at: "2026-01-03T00:00:00Z",
   },
   {
@@ -44,6 +47,7 @@ const MOCK_JOBS: Job[] = [
     url: "",
     status: "offer",
     position: 0,
+    notes: "",
     created_at: "2026-01-04T00:00:00Z",
   },
 ];
@@ -55,11 +59,7 @@ function createWrapper() {
     },
   });
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return React.createElement(
-      QueryClientProvider,
-      { client: queryClient },
-      children
-    );
+    return React.createElement(QueryClientProvider, { client: queryClient }, children);
   };
 }
 
@@ -126,8 +126,7 @@ describe("useJobs", () => {
       "fetch",
       vi.fn().mockResolvedValue({
         ok: false,
-        json: () =>
-          Promise.resolve({ success: false, error: "Failed to fetch jobs" }),
+        json: () => Promise.resolve({ success: false, error: "Failed to fetch jobs" }),
       })
     );
 
@@ -182,6 +181,7 @@ describe("useJobs", () => {
       url: "",
       status: "applied",
       position: 2,
+      notes: "",
       created_at: "2026-01-05T00:00:00Z",
     };
     mockFetch.mockResolvedValueOnce({
@@ -191,8 +191,7 @@ describe("useJobs", () => {
     // Third call: refetch after mutation
     mockFetch.mockResolvedValue({
       ok: true,
-      json: () =>
-        Promise.resolve({ success: true, data: [...MOCK_JOBS, newJob] }),
+      json: () => Promise.resolve({ success: true, data: [...MOCK_JOBS, newJob] }),
     });
     vi.stubGlobal("fetch", mockFetch);
 

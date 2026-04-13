@@ -8,12 +8,8 @@ import type { Job } from "@/types/jobs";
 
 // Mock dnd-kit
 vi.mock("@dnd-kit/core", () => ({
-  DndContext: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
-  DragOverlay: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
+  DndContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DragOverlay: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   PointerSensor: class {},
   KeyboardSensor: class {},
   closestCorners: vi.fn(),
@@ -23,9 +19,7 @@ vi.mock("@dnd-kit/core", () => ({
 }));
 
 vi.mock("@dnd-kit/sortable", () => ({
-  SortableContext: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
+  SortableContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   verticalListSortingStrategy: {},
   sortableKeyboardCoordinates: vi.fn(),
   useSortable: () => ({
@@ -51,6 +45,7 @@ const MOCK_JOBS: Job[] = [
     url: "",
     status: "applied",
     position: 0,
+    notes: "",
     created_at: "2026-01-01",
   },
   {
@@ -61,6 +56,7 @@ const MOCK_JOBS: Job[] = [
     url: "",
     status: "interview",
     position: 0,
+    notes: "",
     created_at: "2026-01-02",
   },
 ];
@@ -70,11 +66,7 @@ function createWrapper() {
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return React.createElement(
-      QueryClientProvider,
-      { client: queryClient },
-      children
-    );
+    return React.createElement(QueryClientProvider, { client: queryClient }, children);
   };
 }
 
@@ -125,9 +117,7 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: /add job/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /add job/i })).toBeInTheDocument();
     });
   });
 
@@ -136,9 +126,7 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: /add job/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /add job/i })).toBeInTheDocument();
     });
 
     await user.click(screen.getByRole("button", { name: /add job/i }));
@@ -153,8 +141,7 @@ describe("KanbanBoard", () => {
       "fetch",
       vi.fn().mockResolvedValue({
         ok: false,
-        json: () =>
-          Promise.resolve({ success: false, error: "Failed to fetch jobs" }),
+        json: () => Promise.resolve({ success: false, error: "Failed to fetch jobs" }),
       })
     );
 
@@ -163,18 +150,14 @@ describe("KanbanBoard", () => {
     await waitFor(() => {
       expect(screen.getByText("Failed to fetch jobs")).toBeInTheDocument();
     });
-    expect(
-      screen.getByRole("button", { name: /retry/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
   });
 
   it("shows drag hint text", async () => {
     render(<KanbanBoard />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/drag jobs between columns/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/drag jobs between columns/i)).toBeInTheDocument();
     });
   });
 });
