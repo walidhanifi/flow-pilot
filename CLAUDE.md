@@ -119,16 +119,28 @@ MANDATORY before every commit/push:
 
 1. `npm run typecheck` — catch type errors
 2. `npm run test` — run all unit tests
-3. `npm run build` — verify production build passes
+3. `npm run build:ci` — build with placeholder env vars, simulates Vercel (no .env.local)
 
 Or run all at once: `npm run check`
 
-These are also enforced by Husky:
+These are enforced by Husky:
 
 - **pre-commit**: prettier format + eslint fix on staged files
-- **pre-push**: typecheck + test + build
+- **pre-push**: typecheck + test + build:ci
+
+NEVER use `npm run build` in the check — it reads .env.local and masks missing-env-var errors that will break Vercel. Always use `build:ci`.
 
 Never push code that fails any of these checks locally.
+
+## Dynamic Routes
+
+Every page or layout that calls `createServerSupabaseClient()` MUST export:
+
+```ts
+export const dynamic = "force-dynamic";
+```
+
+Without this, Next.js attempts to prerender them at build time and the Supabase client throws because env vars are not available during static generation. This applies to any route that touches auth or the database.
 
 ## README Maintenance
 
