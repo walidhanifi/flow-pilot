@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { createBoardSchema } from "@/types/boards";
 import { NextResponse, type NextRequest } from "next/server";
 
-const BOARD_COLUMNS = "id, user_id, name, description, created_at";
+const BOARD_COLUMNS = "id, user_id, name, description, type, created_at";
 
 export async function GET() {
   const supabase = await createServerSupabaseClient();
@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
       user_id: user.id,
       name: result.data.name,
       description: result.data.description,
+      type: result.data.type,
     })
     .select(BOARD_COLUMNS)
     .single();

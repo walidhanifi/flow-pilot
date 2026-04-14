@@ -99,11 +99,11 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByText("To Do")).toBeInTheDocument();
+      expect(screen.getByText("Applied")).toBeInTheDocument();
     });
-    expect(screen.getByText("In Progress")).toBeInTheDocument();
-    expect(screen.getByText("Done")).toBeInTheDocument();
-    expect(screen.getByText("On Hold")).toBeInTheDocument();
+    expect(screen.getByText("Interview")).toBeInTheDocument();
+    expect(screen.getByText("Offer")).toBeInTheDocument();
+    expect(screen.getByText("Closed")).toBeInTheDocument();
   });
 
   it("renders job cards after loading", async () => {
@@ -134,7 +134,7 @@ describe("KanbanBoard", () => {
     await user.click(screen.getByRole("button", { name: /add item/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole("heading", { name: "Add item" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Add company" })).toBeInTheDocument();
     });
   });
 
@@ -159,7 +159,7 @@ describe("KanbanBoard", () => {
     render(<KanbanBoard boardId="board-1" />, { wrapper: createWrapper() });
 
     await waitFor(() => {
-      expect(screen.getByText(/drag items between columns/i)).toBeInTheDocument();
+      expect(screen.getByText(/track applications, interviews, offers/i)).toBeInTheDocument();
     });
   });
 });

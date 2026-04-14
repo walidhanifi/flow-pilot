@@ -21,7 +21,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
   // Verify board exists and belongs to user
   const { data: board } = await supabase
     .from("boards")
-    .select("id, name")
+    .select("id, name, type")
     .eq("id", id)
     .eq("user_id", user.id)
     .single();
@@ -30,7 +30,7 @@ export default async function BoardPage({ params }: BoardPageProps) {
 
   return (
     <div className="bg-dot-grid min-h-full">
-      <KanbanBoard boardId={board.id} boardName={board.name} />
+      <KanbanBoard boardId={board.id} boardName={board.name} boardType={board.type} />
     </div>
   );
 }

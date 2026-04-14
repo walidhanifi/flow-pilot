@@ -150,8 +150,28 @@
   }
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 @utility animate-gradient {
   animation: gradient 8s ease-in-out infinite;
+}
+
+@utility animate-float-slow {
+  animation: float-slow 5.5s ease-in-out infinite;
 }
 
 @utility bg-dot-grid {

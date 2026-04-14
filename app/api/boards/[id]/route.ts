@@ -2,7 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { updateBoardSchema } from "@/types/boards";
 import { NextResponse, type NextRequest } from "next/server";
 
-const BOARD_COLUMNS = "id, user_id, name, description, created_at";
+const BOARD_COLUMNS = "id, user_id, name, description, type, created_at";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createServerSupabaseClient();
@@ -60,6 +60,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const patch: Record<string, unknown> = {};
   if (result.data.name !== undefined) patch.name = result.data.name;
   if (result.data.description !== undefined) patch.description = result.data.description;
+  if (result.data.type !== undefined) patch.type = result.data.type;
 
   const { data, error } = await supabase
     .from("boards")

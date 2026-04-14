@@ -39,6 +39,28 @@ export function useBoards() {
       }
       return json.data as Board;
     },
+    onMutate: async (payload) => {
+      await queryClient.cancelQueries({ queryKey: BOARDS_KEY });
+      const previous = queryClient.getQueryData<Board[]>(BOARDS_KEY);
+      const optimisticBoard: Board = {
+        id: `pending-${crypto.randomUUID()}`,
+        user_id: "pending",
+        name: payload.name,
+        description: payload.description,
+        type: payload.type,
+        created_at: new Date().toISOString(),
+        isPending: true,
+      };
+
+      queryClient.setQueryData<Board[]>(BOARDS_KEY, (old = []) => [...old, optimisticBoard]);
+
+      return { previous };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(BOARDS_KEY, context.previous);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BOARDS_KEY });
     },

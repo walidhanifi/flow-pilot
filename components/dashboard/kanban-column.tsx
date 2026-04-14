@@ -1,48 +1,66 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { EyeOff, Pencil, Check, X } from "lucide-react";
-import type { Job, JobStatus } from "@/types/jobs";
-import { JobCard } from "@/components/dashboard/job-card";
+import { Check, EyeOff, Pencil, X } from "lucide-react";
+import type { BoardItem, BoardItemStatus } from "@/types/board-items";
+import { BoardItemCard } from "@/components/dashboard/board-item-card";
 import { JobCardSkeleton } from "@/components/dashboard/job-card-skeleton";
+import type { Job } from "@/types/jobs";
 
 interface KanbanColumnProps {
-  readonly status: JobStatus;
+  readonly status: BoardItemStatus;
   readonly label: string;
   readonly colorClass: string;
-  readonly jobs: Job[];
+  readonly items?: BoardItem[];
+  readonly jobs?: Job[];
   readonly isLoading: boolean;
-  readonly onDeleteJob?: (id: string) => void;
-  readonly deletingJobId?: string;
-  readonly onRename?: (status: JobStatus, label: string) => void;
-  readonly onHide?: (status: JobStatus) => void;
-  readonly onEditJob?: (job: Job) => void;
+  readonly emptyState?: string;
+  readonly onDeleteItem?: (id: string) => void;
+  readonly deletingItemId?: string;
+  readonly onRename?: (status: BoardItemStatus, label: string) => void;
+  readonly onHide?: (status: BoardItemStatus) => void;
+  readonly onEditItem?: (item: BoardItem) => void;
 }
 
 export function KanbanColumn({
   status,
   label,
   colorClass,
+  items,
   jobs,
   isLoading,
-  onDeleteJob,
-  deletingJobId,
+  emptyState = "Nothing here yet",
+  onDeleteItem,
+  deletingItemId,
   onRename,
   onHide,
-  onEditJob,
+  onEditItem,
 }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: status,
     data: { type: "column", status },
   });
-
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(label);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resolvedItems =
+    items ??
+    (jobs ?? []).map<BoardItem>((job) => ({
+      id: job.id,
+      user_id: job.user_id,
+      board_id: job.board_id ?? "",
+      title: job.company,
+      subtitle: job.role,
+      link: job.url,
+      status: job.status,
+      position: job.position,
+      notes: job.notes,
+      created_at: job.created_at,
+    }));
 
-  const jobIds = jobs.map((j) => j.id);
+  const itemIds = resolvedItems.map((item) => item.id);
 
   function startEdit() {
     setDraft(label);
@@ -52,9 +70,7 @@ export function KanbanColumn({
 
   function commitEdit() {
     const trimmed = draft.trim();
-    if (trimmed && trimmed !== label) {
-      onRename?.(status, trimmed);
-    }
+    if (trimmed && trimmed !== label) onRename?.(status, trimmed);
     setEditing(false);
   }
 
@@ -66,17 +82,13 @@ export function KanbanColumn({
   return (
     <div
       className={[
-        "flex flex-col rounded-2xl border border-border/50 bg-muted/30 transition-colors duration-200",
-        isOver && "border-primary/30 bg-accent/50",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+        "flex flex-col rounded-[1.8rem] border border-border/50 bg-muted/25 shadow-lg shadow-primary/5 transition-colors duration-200",
+        isOver && "border-primary/30 bg-accent/40",
+      ].join(" ")}
     >
-      {/* Color strip */}
-      <div className={`mx-4 mt-3 h-1 rounded-full ${colorClass}`} />
+      <div className={`mx-4 mt-4 h-1.5 rounded-full ${colorClass}`} />
 
-      {/* Header */}
-      <div className="group/header flex items-center gap-2 px-4 pb-2 pt-3">
+      <div className="group/header flex items-center gap-2 px-4 pb-3 pt-4">
         {editing ? (
           <div className="flex flex-1 items-center gap-1">
             <input
@@ -104,13 +116,18 @@ export function KanbanColumn({
             </button>
           </div>
         ) : (
-          <h3 className="flex-1 text-sm font-bold tracking-tight">{label}</h3>
+          <div className="flex-1">
+            <h3 className="text-sm font-bold tracking-tight">{label}</h3>
+            <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-muted-foreground/70">
+              {resolvedItems.length} item{resolvedItems.length === 1 ? "" : "s"}
+            </p>
+          </div>
         )}
 
         {!editing && (
           <div className="flex items-center gap-1">
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-foreground/10 px-1.5 text-xs font-semibold">
-              {jobs.length}
+            <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-foreground/10 px-1.5 text-xs font-semibold">
+              {resolvedItems.length}
             </span>
             {onRename && (
               <button
@@ -134,29 +151,28 @@ export function KanbanColumn({
         )}
       </div>
 
-      {/* Card list */}
       <div
         ref={setNodeRef}
-        className="flex flex-1 flex-col gap-2 overflow-y-auto px-3 pb-3"
+        className="flex flex-1 flex-col gap-3 overflow-y-auto px-3 pb-3"
         style={{ maxHeight: "calc(100vh - 240px)" }}
       >
-        <SortableContext items={jobIds} strategy={verticalListSortingStrategy}>
+        <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
           {isLoading && <JobCardSkeleton count={3} />}
 
-          {!isLoading && jobs.length === 0 && (
-            <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-border/50 p-6">
-              <p className="text-center text-sm text-muted-foreground">Nothing here yet</p>
+          {!isLoading && resolvedItems.length === 0 && (
+            <div className="flex flex-1 items-center justify-center rounded-2xl border-2 border-dashed border-border/50 bg-background/55 p-6">
+              <p className="text-center text-sm text-muted-foreground">{emptyState}</p>
             </div>
           )}
 
           {!isLoading &&
-            jobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onDelete={onDeleteJob ? () => onDeleteJob(job.id) : undefined}
-                isDeleting={deletingJobId === job.id}
-                onEdit={onEditJob ? () => onEditJob(job) : undefined}
+            resolvedItems.map((item) => (
+              <BoardItemCard
+                key={item.id}
+                item={item}
+                onDelete={onDeleteItem ? () => onDeleteItem(item.id) : undefined}
+                isDeleting={deletingItemId === item.id}
+                onEdit={onEditItem ? () => onEditItem(item) : undefined}
               />
             ))}
         </SortableContext>

@@ -38,7 +38,7 @@ function SectionCard({
 
 export function SettingsView({ email }: SettingsViewProps) {
   const { theme, setTheme } = useTheme();
-  const { settings, toggleColumn, renameColumn: _rename, resetToDefaults } = useColumnSettings();
+  const { settings, toggleColumn, resetToDefaults } = useColumnSettings("job");
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6 pb-12">
