@@ -35,12 +35,12 @@ const NAV_MAIN: NavItem[] = [
   { label: "AI Insights", href: "/dashboard/ai-insights", icon: Sparkles, soon: true },
   { label: "Calendar", href: "/dashboard/calendar", icon: Calendar, soon: true },
   { label: "Documents", href: "/dashboard/documents", icon: FileText, soon: true },
-  { label: "Contacts", href: "/dashboard/contacts", icon: Contact2, soon: true },
+  { label: "Contacts", href: "/dashboard/contacts", icon: Contact2, soon: false },
   { label: "Goals", href: "/dashboard/goals", icon: Target, soon: true },
 ];
 
 const NAV_FOOTER: NavItem[] = [
-  { label: "Team", href: "/dashboard/team", icon: Users, soon: false },
+  { label: "Teams", href: "/dashboard/team", icon: Users, soon: false },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, soon: false },
 ];
 
@@ -59,6 +59,9 @@ export function Sidebar({ email }: SidebarProps) {
   const isActive = (href: string) => {
     if (href === "/dashboard")
       return pathname === "/dashboard" || pathname.startsWith("/dashboard/board/");
+    if (href === "/dashboard/team") {
+      return pathname.startsWith("/dashboard/team");
+    }
     return pathname.startsWith(href);
   };
 
@@ -134,7 +137,7 @@ export function Sidebar({ email }: SidebarProps) {
                 className="mt-2 flex items-center gap-1.5 text-xs text-sidebar-foreground/60 transition-colors hover:text-sidebar-foreground disabled:opacity-50"
               >
                 <LogOut size={12} />
-                {loggingOut ? "Signing out…" : "Sign out"}
+                {loggingOut ? "Signing out..." : "Sign out"}
               </button>
             </div>
           </div>
