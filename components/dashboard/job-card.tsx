@@ -89,7 +89,7 @@ export function JobCard({
               e.stopPropagation();
               onEdit();
             }}
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground opacity-0 transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:opacity-100"
+            className="flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-muted-foreground opacity-0 transition-all duration-150 hover:bg-muted hover:text-foreground group-hover:opacity-100"
           >
             <Pencil size={11} />
           </button>
@@ -100,7 +100,7 @@ export function JobCard({
             onClick={handleDeleteClick}
             disabled={isDeleting}
             className={[
-              "flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
+              "flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
               confirming
                 ? "bg-destructive text-destructive-foreground opacity-100"
                 : "text-muted-foreground opacity-0 hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100",
@@ -125,7 +125,7 @@ export function JobCard({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}
-            className="flex min-w-0 items-center gap-1 rounded-md border border-border/60 bg-muted/50 px-1.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+            className="flex cursor-pointer min-w-0 items-center gap-1 rounded-md border border-border/60 bg-muted/50 px-1.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
           >
             <ExternalLink size={9} className="shrink-0" />
             <span className="truncate">{extractDomain(job.url)}</span>

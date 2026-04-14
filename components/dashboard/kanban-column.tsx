@@ -90,10 +90,16 @@ export function KanbanColumn({
               className="flex-1 rounded-md border border-primary/40 bg-background px-2 py-0.5 text-sm font-bold tracking-tight outline-none focus:border-primary"
               maxLength={32}
             />
-            <button onClick={commitEdit} className="text-primary hover:text-primary/80">
+            <button
+              onClick={commitEdit}
+              className="cursor-pointer text-primary hover:text-primary/80"
+            >
               <Check size={14} />
             </button>
-            <button onClick={cancelEdit} className="text-muted-foreground hover:text-foreground">
+            <button
+              onClick={cancelEdit}
+              className="cursor-pointer text-muted-foreground hover:text-foreground"
+            >
               <X size={14} />
             </button>
           </div>
@@ -110,7 +116,7 @@ export function KanbanColumn({
               <button
                 onClick={startEdit}
                 title="Rename column"
-                className="rounded-md p-1 text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground group-hover/header:opacity-100"
+                className="cursor-pointer rounded-md p-1 text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground group-hover/header:opacity-100"
               >
                 <Pencil size={12} />
               </button>
@@ -119,7 +125,7 @@ export function KanbanColumn({
               <button
                 onClick={() => onHide(status)}
                 title="Hide column"
-                className="rounded-md p-1 text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground group-hover/header:opacity-100"
+                className="cursor-pointer rounded-md p-1 text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground group-hover/header:opacity-100"
               >
                 <EyeOff size={12} />
               </button>

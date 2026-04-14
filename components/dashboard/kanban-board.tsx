@@ -151,7 +151,7 @@ export function KanbanBoard({ boardId, boardName }: KanbanBoardProps) {
             <button
               key={s.status}
               onClick={() => toggleColumn(s.status)}
-              className="flex items-center gap-1 rounded-md border border-border/60 bg-background px-2 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+              className="cursor-pointer flex items-center gap-1 rounded-md border border-border/60 bg-background px-2 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
             >
               <Eye size={11} />
               {s.label}

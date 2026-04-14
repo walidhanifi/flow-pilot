@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { Board } from "@/types/boards";
 
 function relativeTime(dateStr: string): string {
@@ -179,7 +180,7 @@ function BoardCard({ board, onOpen, onDelete, isDeleting }: BoardCardProps) {
       onMouseLeave={() => setConfirming(false)}
       disabled={isDeleting}
       className={[
-        "group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card text-left transition-all duration-200",
+        "group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card text-left transition-all duration-200 cursor-pointer",
         "hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30",
         isDeleting && "pointer-events-none opacity-50",
       ]
@@ -198,7 +199,7 @@ function BoardCard({ board, onOpen, onDelete, isDeleting }: BoardCardProps) {
         <button
           onClick={handleDelete}
           className={[
-            "flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
+            "flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all duration-150",
             confirming
               ? "bg-destructive text-destructive-foreground opacity-100"
               : "bg-black/20 text-white/80 opacity-0 hover:bg-destructive/80 hover:text-white group-hover:opacity-100",
@@ -278,8 +279,15 @@ export function BoardSelector() {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="h-48 animate-pulse rounded-2xl border border-border/40 bg-muted/40"
-            />
+              className="flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card"
+            >
+              <Skeleton className="h-24 w-full rounded-none" />
+              <div className="flex flex-col gap-2 p-4 pt-8">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="mt-2 h-2 w-2/3" />
+              </div>
+            </div>
           ))}
         </div>
       ) : boards.length === 0 ? (
