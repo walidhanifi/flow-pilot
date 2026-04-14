@@ -32,9 +32,7 @@ describe("LoginForm", () => {
 
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Sign in" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
   });
 
   it("renders link to signup page", () => {
@@ -65,9 +63,7 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Password must be at least 8 characters")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Password must be at least 8 characters")).toBeInTheDocument();
     });
     expect(mockSignInWithPassword).not.toHaveBeenCalled();
   });
@@ -116,9 +112,7 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Invalid email or password. Please try again.")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Invalid login credentials")).toBeInTheDocument();
     });
     expect(mockPush).not.toHaveBeenCalled();
   });
@@ -138,9 +132,7 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: "Sign in" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Signing in..." })
-      ).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Signing in..." })).toBeDisabled();
     });
 
     resolveSignIn!({ error: null });

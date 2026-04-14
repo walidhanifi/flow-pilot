@@ -40,16 +40,18 @@ export function SignupForm() {
     setLoading(true);
 
     const supabase = createBrowserSupabaseClient();
+    const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
     const { data, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${redirectUrl}/auth/callback`,
       },
     });
 
     if (signUpError) {
-      setError("Could not create account. Please try again.");
+      const errorMessage = signUpError.message || "Could not create account. Please try again.";
+      setError(errorMessage);
       setLoading(false);
       return;
     }
@@ -86,19 +88,13 @@ export function SignupForm() {
               />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight">
-            Check your email
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight">Check your email</h2>
           <p className="mt-2 text-base text-muted-foreground">
-            We sent a confirmation link to{" "}
-            <strong className="text-foreground">{email}</strong>. Click the link
-            to activate your account.
+            We sent a confirmation link to <strong className="text-foreground">{email}</strong>.
+            Click the link to activate your account.
           </p>
         </div>
-        <Link
-          href="/login"
-          className="text-sm font-semibold text-primary hover:underline"
-        >
+        <Link href="/login" className="text-sm font-semibold text-primary hover:underline">
           Back to login
         </Link>
       </div>
@@ -108,9 +104,7 @@ export function SignupForm() {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-3xl font-bold tracking-tight">
-          Create your account
-        </h2>
+        <h2 className="text-3xl font-bold tracking-tight">Create your account</h2>
         <p className="mt-2 text-base text-muted-foreground">
           Start tracking your job applications in one place.
         </p>
@@ -118,8 +112,17 @@ export function SignupForm() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {error && (
-          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive">
-            {error}
+          <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive shadow-sm">
+            <div className="flex items-start gap-3">
+              <svg className="h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p>{error}</p>
+            </div>
           </div>
         )}
 
@@ -137,9 +140,7 @@ export function SignupForm() {
             className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
           />
           {fieldErrors.email && (
-            <p className="text-sm font-medium text-destructive">
-              {fieldErrors.email}
-            </p>
+            <p className="text-sm font-medium text-destructive">{fieldErrors.email}</p>
           )}
         </div>
 
@@ -157,9 +158,7 @@ export function SignupForm() {
             className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
           />
           {fieldErrors.password && (
-            <p className="text-sm font-medium text-destructive">
-              {fieldErrors.password}
-            </p>
+            <p className="text-sm font-medium text-destructive">{fieldErrors.password}</p>
           )}
         </div>
 
@@ -177,9 +176,7 @@ export function SignupForm() {
             className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
           />
           {fieldErrors.confirmPassword && (
-            <p className="text-sm font-medium text-destructive">
-              {fieldErrors.confirmPassword}
-            </p>
+            <p className="text-sm font-medium text-destructive">{fieldErrors.confirmPassword}</p>
           )}
         </div>
 
@@ -193,10 +190,7 @@ export function SignupForm() {
 
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-semibold text-primary hover:underline"
-          >
+          <Link href="/login" className="font-semibold text-primary hover:underline">
             Sign in
           </Link>
         </p>

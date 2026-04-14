@@ -44,7 +44,8 @@ export function LoginForm() {
     });
 
     if (signInError) {
-      setError("Invalid email or password. Please try again.");
+      const errorMessage = signInError.message || "Invalid email or password. Please try again.";
+      setError(errorMessage);
       setLoading(false);
       return;
     }
@@ -64,8 +65,17 @@ export function LoginForm() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {error && (
-          <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm font-medium text-destructive">
-            {error}
+          <div className="rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive shadow-sm">
+            <div className="flex items-start gap-3">
+              <svg className="h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p>{error}</p>
+            </div>
           </div>
         )}
 
@@ -83,9 +93,7 @@ export function LoginForm() {
             className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
           />
           {fieldErrors.email && (
-            <p className="text-sm font-medium text-destructive">
-              {fieldErrors.email}
-            </p>
+            <p className="text-sm font-medium text-destructive">{fieldErrors.email}</p>
           )}
         </div>
 
@@ -103,9 +111,7 @@ export function LoginForm() {
             className="h-12 rounded-xl border-border/80 bg-muted/40 px-4 text-base transition-colors focus-visible:bg-background"
           />
           {fieldErrors.password && (
-            <p className="text-sm font-medium text-destructive">
-              {fieldErrors.password}
-            </p>
+            <p className="text-sm font-medium text-destructive">{fieldErrors.password}</p>
           )}
         </div>
 
@@ -119,10 +125,7 @@ export function LoginForm() {
 
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="font-semibold text-primary hover:underline"
-          >
+          <Link href="/signup" className="font-semibold text-primary hover:underline">
             Create one
           </Link>
         </p>

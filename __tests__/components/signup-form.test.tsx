@@ -33,9 +33,7 @@ describe("SignupForm", () => {
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Confirm password")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Get started" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Get started" })).toBeInTheDocument();
   });
 
   it("renders link to login page", () => {
@@ -51,16 +49,11 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "different123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "different123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Passwords do not match")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Passwords do not match")).toBeInTheDocument();
     });
     expect(mockSignUp).not.toHaveBeenCalled();
   });
@@ -75,9 +68,7 @@ describe("SignupForm", () => {
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
-      const errors = screen.getAllByText(
-        "Password must be at least 8 characters"
-      );
+      const errors = screen.getAllByText("Password must be at least 8 characters");
       expect(errors.length).toBeGreaterThanOrEqual(1);
     });
     expect(mockSignUp).not.toHaveBeenCalled();
@@ -93,10 +84,7 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "password123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "password123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
@@ -115,10 +103,7 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "password123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "password123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
@@ -138,16 +123,11 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "password123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "password123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Could not create account. Please try again.")
-      ).toBeInTheDocument();
+      expect(screen.getByText("User already registered")).toBeInTheDocument();
     });
     expect(mockPush).not.toHaveBeenCalled();
   });
@@ -162,10 +142,7 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "password123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "password123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
@@ -191,16 +168,11 @@ describe("SignupForm", () => {
 
     await user.type(screen.getByLabelText("Email"), "user@example.com");
     await user.type(screen.getByLabelText("Password"), "password123");
-    await user.type(
-      screen.getByLabelText("Confirm password"),
-      "password123"
-    );
+    await user.type(screen.getByLabelText("Confirm password"), "password123");
     await user.click(screen.getByRole("button", { name: "Get started" }));
 
     await waitFor(() => {
-      expect(
-        screen.getByRole("button", { name: "Creating account..." })
-      ).toBeDisabled();
+      expect(screen.getByRole("button", { name: "Creating account..." })).toBeDisabled();
     });
 
     resolveSignUp!({ data: { session: null }, error: null });
