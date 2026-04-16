@@ -166,12 +166,29 @@
   }
 }
 
+@keyframes page-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
 @utility animate-gradient {
   animation: gradient 8s ease-in-out infinite;
 }
 
 @utility animate-float-slow {
   animation: float-slow 5.5s ease-in-out infinite;
+}
+
+@utility animate-page-enter {
+  animation: page-enter 280ms ease-out both;
 }
 
 @utility bg-dot-grid {

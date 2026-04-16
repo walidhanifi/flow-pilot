@@ -122,7 +122,7 @@ export function Sidebar({ email }: SidebarProps) {
             <button
               onClick={cycleTheme}
               title={`Theme: ${theme}`}
-              className="mb-2 flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-all hover:bg-sidebar-accent/70 hover:text-sidebar-foreground"
+              className="mb-2 flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition-all duration-200 hover:-translate-y-px hover:bg-sidebar-accent/70 hover:text-sidebar-foreground"
             >
               <ThemeIcon size={15} className="shrink-0" />
               <span className="capitalize">{theme} mode</span>
@@ -134,7 +134,7 @@ export function Sidebar({ email }: SidebarProps) {
               <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="mt-2 flex items-center gap-1.5 text-xs text-sidebar-foreground/60 transition-colors hover:text-sidebar-foreground disabled:opacity-50"
+                className="mt-2 flex cursor-pointer items-center gap-1.5 text-xs text-sidebar-foreground/60 transition-all duration-200 hover:-translate-y-px hover:text-sidebar-foreground disabled:opacity-50"
               >
                 <LogOut size={12} />
                 {loggingOut ? "Signing out..." : "Sign out"}
@@ -161,7 +161,7 @@ function DesktopNavItem({ item, active }: { item: NavItem; active: boolean }) {
     <Link href={item.href} className="block">
       <span
         className={cn(
-          "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-150",
+          "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-px",
           active
             ? "bg-primary/10 text-primary"
             : "text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground"
@@ -182,7 +182,10 @@ function DesktopNavItem({ item, active }: { item: NavItem; active: boolean }) {
 function MobileNavItem({ item, active }: { item: NavItem; active: boolean }) {
   const Icon = item.icon;
   return (
-    <Link href={item.href} className="flex flex-1 flex-col items-center justify-center gap-1 py-1">
+    <Link
+      href={item.href}
+      className="flex flex-1 flex-col items-center justify-center gap-1 py-1 transition-transform duration-200 hover:-translate-y-px"
+    >
       <Icon
         size={20}
         className={cn("transition-colors", active ? "text-primary" : "text-muted-foreground")}

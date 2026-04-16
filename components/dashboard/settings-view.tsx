@@ -58,62 +58,60 @@ export function SettingsView({ email }: SettingsViewProps) {
       />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-8 pb-12 lg:px-8">
-        <Card className="rounded-[30px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
-          <CardContent className="grid gap-8 px-6 py-6 sm:px-8 sm:py-8 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                <Sparkles className="size-3.5 text-primary" />
-                Workspace polish
-              </div>
-              <div className="space-y-3">
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Settings that feel deliberate, not tucked away
-                </h1>
-                <p className="max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                  Appearance, board visibility, and a few workflow defaults now live in a cleaner
-                  theme-aware surface with more depth than the original utility page.
-                </p>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                <TopMetric label="Theme modes" value="3" hint="Light, dark, and system aware" />
-                <TopMetric
-                  label="Hidden columns"
-                  value={String(hiddenCount)}
-                  hint="Saved with your board prefs"
-                />
-                <TopMetric
-                  label="Account email"
-                  value="1"
-                  hint="Visible without burying profile info"
-                />
-              </div>
+        <section className="grid gap-8 border-b border-border/60 pb-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase backdrop-blur">
+              <Sparkles className="size-3.5 text-primary" />
+              Workspace polish
+            </div>
+            <div className="space-y-3">
+              <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+                Settings that feel deliberate, not tucked away
+              </h1>
+              <p className="max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                Appearance, board visibility, and a few workflow defaults now live in a cleaner
+                theme-aware surface with more depth than the original utility page.
+              </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <MiniSetting
-                title="Adaptive theme"
-                description="Theme cards and page chrome are tuned to the app's warm visual language."
+            <div className="grid gap-3 sm:grid-cols-3">
+              <TopMetric label="Theme modes" value="3" hint="Light, dark, and system aware" />
+              <TopMetric
+                label="Hidden columns"
+                value={String(hiddenCount)}
+                hint="Saved with your board prefs"
               />
-              <MiniSetting
-                title="Board visibility"
-                description="Column preferences stay accessible without feeling like an admin screen."
-              />
-              <MiniSetting
-                title="Quiet defaults"
-                description="Small workflow toggles preview how richer workspace preferences can land."
-              />
-              <MiniSetting
-                title="Dark mode"
-                description="All new surfaces use semantic colors and translucent layers, not hard-coded whites."
+              <TopMetric
+                label="Account email"
+                value="1"
+                hint="Visible without burying profile info"
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <MiniSetting
+              title="Adaptive theme"
+              description="Theme cards and page chrome are tuned to the app's warm visual language."
+            />
+            <MiniSetting
+              title="Board visibility"
+              description="Column preferences stay accessible without feeling like an admin screen."
+            />
+            <MiniSetting
+              title="Quiet defaults"
+              description="Small workflow toggles preview how richer workspace preferences can land."
+            />
+            <MiniSetting
+              title="Dark mode"
+              description="All new surfaces use semantic colors and translucent layers, not hard-coded whites."
+            />
+          </div>
+        </section>
 
         <section className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="grid gap-6">
-            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
               <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
                 <CardTitle>Appearance</CardTitle>
                 <CardDescription>
@@ -127,7 +125,7 @@ export function SettingsView({ email }: SettingsViewProps) {
                     type="button"
                     onClick={() => setTheme(value)}
                     className={cn(
-                      "rounded-[24px] border p-4 text-left transition-all",
+                      "cursor-pointer rounded-[24px] border p-4 text-left transition-all duration-200 hover:-translate-y-0.5",
                       theme === value
                         ? "border-primary/30 bg-primary/10 shadow-lg shadow-primary/10"
                         : "border-border/70 bg-background/75 hover:border-primary/20 hover:bg-background"
@@ -143,7 +141,7 @@ export function SettingsView({ email }: SettingsViewProps) {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
               <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -162,7 +160,7 @@ export function SettingsView({ email }: SettingsViewProps) {
                 {settings.map((column) => (
                   <div
                     key={column.status}
-                    className="flex items-center gap-3 rounded-[22px] border border-border/70 bg-background/75 px-4 py-3"
+                    className="flex items-center gap-3 rounded-[22px] border border-border/70 bg-background/75 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background"
                   >
                     <div className={cn("size-2.5 rounded-full", column.color)} />
                     <div className="min-w-0 flex-1">
@@ -185,7 +183,7 @@ export function SettingsView({ email }: SettingsViewProps) {
           </div>
 
           <div className="grid gap-6">
-            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
               <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
                 <CardTitle>Workspace defaults</CardTitle>
                 <CardDescription>
@@ -214,7 +212,7 @@ export function SettingsView({ email }: SettingsViewProps) {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
               <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
                 <CardTitle>Account</CardTitle>
                 <CardDescription>
@@ -222,13 +220,13 @@ export function SettingsView({ email }: SettingsViewProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 px-6 pb-6 sm:px-7 sm:pb-7">
-                <div className="rounded-[24px] border border-border/70 bg-background/75 p-4">
+                <div className="rounded-[24px] border border-border/70 bg-background/75 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background hover:shadow-md hover:shadow-primary/5">
                   <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
                     Signed in as
                   </p>
                   <p className="mt-2 text-base font-semibold tracking-tight">{email}</p>
                 </div>
-                <div className="rounded-[24px] border border-dashed border-border/80 bg-background/60 p-4">
+                <div className="rounded-[24px] border border-dashed border-border/80 bg-background/60 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background">
                   <p className="text-sm leading-6 text-muted-foreground">
                     Password management, exports, and workspace billing can land here later without
                     changing the page structure again.
@@ -245,7 +243,7 @@ export function SettingsView({ email }: SettingsViewProps) {
 
 function TopMetric({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
-    <div className="rounded-2xl border border-border/70 bg-background/75 p-4">
+    <div className="rounded-2xl border border-border/70 bg-card/75 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card hover:shadow-md hover:shadow-primary/5">
       <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
         {label}
       </p>
@@ -257,7 +255,7 @@ function TopMetric({ label, value, hint }: { label: string; value: string; hint:
 
 function MiniSetting({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-3xl border border-border/70 bg-background/75 p-4">
+    <div className="rounded-3xl border border-border/70 bg-card/75 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card hover:shadow-md hover:shadow-primary/5">
       <h2 className="text-base font-semibold tracking-tight">{title}</h2>
       <p className="mt-1 text-sm leading-6 text-muted-foreground">{description}</p>
     </div>
@@ -276,7 +274,7 @@ function PreferenceRow({
   onToggle: () => void;
 }) {
   return (
-    <div className="flex items-center gap-4 rounded-[22px] border border-border/70 bg-background/75 px-4 py-3">
+    <div className="flex items-center gap-4 rounded-[22px] border border-border/70 bg-background/75 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background">
       <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold">{title}</p>
         <p className="text-sm leading-6 text-muted-foreground">{description}</p>

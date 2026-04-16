@@ -51,72 +51,61 @@ export function FeatureShell({
       />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-8 pb-12 lg:px-8">
-        <section className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-          <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
-            <CardContent className="relative overflow-hidden px-6 py-6 sm:px-8 sm:py-8">
+        <section className="flex flex-col gap-5 border-b border-border/60 pb-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground backdrop-blur">
+              <Sparkles className="size-3.5 text-primary" />
+              {badge}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
+              <Clock3 className="size-3.5" />
+              Preview route
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-card/80 shadow-sm backdrop-blur">
+              <Icon className="size-7 text-primary" strokeWidth={1.8} />
+            </div>
+            <div className="space-y-2">
+              <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+                {title}
+              </h1>
+              <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+                {description}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-3 xl:max-w-4xl">
+            {metrics.map((metric) => (
               <div
-                aria-hidden
-                className={cn(
-                  "absolute right-0 top-0 h-40 w-40 rounded-full blur-3xl",
-                  accentClassName
-                )}
-              />
-              <div className="relative flex flex-col gap-6">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                    <Sparkles className="size-3.5 text-primary" />
-                    {badge}
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3 py-1 text-xs font-medium text-primary">
-                    <Clock3 className="size-3.5" />
-                    Planned next
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-border/70 bg-background/80 shadow-sm">
-                    <Icon className="size-7 text-primary" strokeWidth={1.8} />
-                  </div>
-                  <div className="space-y-2">
-                    <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-                      {title}
-                    </h1>
-                    <p className="max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                      {description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {metrics.map((metric) => (
-                    <div
-                      key={metric.label}
-                      className="rounded-2xl border border-border/70 bg-background/70 p-4"
-                    >
-                      <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                        {metric.label}
-                      </p>
-                      <p className="mt-2 text-2xl font-semibold tracking-tight">{metric.value}</p>
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">{metric.hint}</p>
-                    </div>
-                  ))}
-                </div>
+                key={metric.label}
+                className="rounded-2xl border border-border/70 bg-card/75 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card hover:shadow-lg hover:shadow-primary/5"
+              >
+                <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                  {metric.label}
+                </p>
+                <p className="mt-2 text-2xl font-semibold tracking-tight">{metric.value}</p>
+                <p className="mt-1 text-xs leading-5 text-muted-foreground">{metric.hint}</p>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
+        </section>
 
-          <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
+        <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
             <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
               <CardTitle>Preview stack</CardTitle>
               <CardDescription>
-                Enough structure to make the route feel real while the full feature set lands.
+                The route opens directly into the working surface instead of a giant summary block.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 px-6 pb-6 sm:px-7 sm:pb-7">
               {previews.map((preview, index) => (
                 <div
                   key={preview.title}
-                  className="rounded-2xl border border-border/70 bg-background/70 p-4"
+                  className="rounded-2xl border border-border/70 bg-background/75 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background hover:shadow-md hover:shadow-primary/5"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -139,68 +128,67 @@ export function FeatureShell({
               </div>
             </CardContent>
           </Card>
-        </section>
 
-        <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
-            <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
-              <CardTitle>What’s already designed</CardTitle>
-              <CardDescription>
-                The core flow is scoped and framed so this page never drops users into a 404.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-              <ul className="space-y-3">
-                {highlights.map((highlight) => (
-                  <li
-                    key={highlight}
-                    className="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/70 px-4 py-3"
-                  >
-                    <span className="mt-1 size-2 rounded-full bg-primary" />
-                    <span className="text-sm leading-6 text-muted-foreground">{highlight}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <div className="grid gap-6">
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
+              <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
+                <CardTitle>What is already designed</CardTitle>
+                <CardDescription>
+                  The core flow is scoped and framed so the page never drops users into a dead end.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
+                <ul className="space-y-3">
+                  {highlights.map((highlight) => (
+                    <li
+                      key={highlight}
+                      className="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/75 px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background"
+                    >
+                      <span className="mt-1 size-2 rounded-full bg-primary" />
+                      <span className="text-sm leading-6 text-muted-foreground">{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
 
-          <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm">
-            <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
-              <CardTitle>Design note</CardTitle>
-              <CardDescription>
-                This route is intentionally styled like an active product surface rather than a dead
-                placeholder.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-3xl border border-border/70 bg-background/75 p-5">
-                  <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                    Surface
-                  </p>
-                  <p className="mt-3 text-base font-semibold tracking-tight">
-                    Layered glass cards, soft gradients, and clean spacing
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    The visuals stay readable in both themes because they rely on shared semantic
-                    colors instead of hard-coded light backgrounds.
-                  </p>
+            <Card className="rounded-[28px] border border-border/70 bg-card/85 py-0 shadow-xl shadow-black/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
+              <CardHeader className="px-6 pt-6 sm:px-7 sm:pt-7">
+                <CardTitle>Design note</CardTitle>
+                <CardDescription>
+                  This route is styled like an active surface rather than a placeholder card.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-3xl border border-border/70 bg-background/75 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background">
+                    <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                      Surface
+                    </p>
+                    <p className="mt-3 text-base font-semibold tracking-tight">
+                      Layered glass cards, soft gradients, and clean spacing
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      The visuals stay readable in both themes because they rely on shared semantic
+                      colors instead of hard-coded light backgrounds.
+                    </p>
+                  </div>
+                  <div className="rounded-3xl border border-border/70 bg-background/75 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-background">
+                    <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                      Behavior
+                    </p>
+                    <p className="mt-3 text-base font-semibold tracking-tight">
+                      Clear roadmap messaging without blocking navigation
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      Users can click around, understand what is coming, and keep moving through the
+                      dashboard without feeling like they hit an unfinished edge case.
+                    </p>
+                  </div>
                 </div>
-                <div className="rounded-3xl border border-border/70 bg-background/75 p-5">
-                  <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
-                    Behavior
-                  </p>
-                  <p className="mt-3 text-base font-semibold tracking-tight">
-                    Clear roadmap messaging without blocking navigation
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Users can click around, understand what is coming, and keep moving through the
-                    dashboard without feeling like they hit an unfinished edge case.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </section>
       </div>
     </div>

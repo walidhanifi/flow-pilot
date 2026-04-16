@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BriefcaseBusiness, FolderKanban, Handshake, LayoutGrid, Plus, Trash2 } from "lucide-react";
 import { useBoards } from "@/hooks/use-boards";
@@ -228,6 +228,7 @@ interface BoardCardProps {
 
 function BoardCard({ board, onOpen, onDelete, isDeleting }: BoardCardProps) {
   const [confirming, setConfirming] = useState(false);
+  const router = useRouter();
   const gradient = getBoardGradient(board.id);
   const Icon = BOARD_TYPE_ICONS[board.type];
   const typeConfig = BOARD_TYPE_CONFIG[board.type];
@@ -245,6 +246,8 @@ function BoardCard({ board, onOpen, onDelete, isDeleting }: BoardCardProps) {
   return (
     <button
       onClick={onOpen}
+      onMouseEnter={() => router.prefetch(`/dashboard/board/${board.id}`)}
+      onFocus={() => router.prefetch(`/dashboard/board/${board.id}`)}
       onMouseLeave={() => setConfirming(false)}
       disabled={isDeleting}
       className={[
@@ -332,6 +335,12 @@ export function BoardSelector() {
   const router = useRouter();
   const { boards, isLoading, isError, refetch, createBoard, deleteBoard } = useBoards();
   const [createOpen, setCreateOpen] = useState(false);
+
+  useEffect(() => {
+    for (const board of boards.slice(0, 6)) {
+      router.prefetch(`/dashboard/board/${board.id}`);
+    }
+  }, [boards, router]);
 
   async function handleCreate(payload: { name: string; description: string; type: BoardType }) {
     const board = await createBoard.mutateAsync(payload);

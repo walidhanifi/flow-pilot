@@ -34,7 +34,6 @@ export default function RootLayout({
       className={`${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        { }
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="flex min-h-full flex-col">
