@@ -32,6 +32,9 @@ export function useJobs(boardId: string) {
   } = useQuery<Job[]>({
     queryKey: JOBS_KEY,
     queryFn: () => fetchJobs(boardId),
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
+    refetchOnMount: "always",
   });
 
   const jobsByStatus = useMemo(() => {

@@ -24,6 +24,8 @@ export function useBoards() {
   } = useQuery<Board[]>({
     queryKey: BOARDS_KEY,
     queryFn: fetchBoards,
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 
   const createBoard = useMutation({

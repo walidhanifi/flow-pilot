@@ -50,6 +50,9 @@ export function useBoardItems(boardId: string, boardType: BoardType) {
   } = useQuery<BoardItem[]>({
     queryKey: key,
     queryFn: () => fetchBoardItems(boardId),
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
+    refetchOnMount: "always",
   });
 
   const itemsByStatus = useMemo(() => {
